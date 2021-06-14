@@ -36,7 +36,7 @@ class Timetable:
             for activity_code in term["meetings"]:
                 curr_activity_meetings = []
                 for meeting in term["meetings"][activity_code]:
-                    if not self.check_overlap(term, meeting):
+                    if not self.check_overlap(term["term"], meeting):
                         curr_activity_meetings.append(meeting)
                 all_activities.append(curr_activity_meetings)
 
@@ -47,13 +47,29 @@ class Timetable:
         for time in meeting["times"]:
             if time["start"] == "None":  # Async timetable case
                 return False
-            datetime.time(time["start"])
-            datetime.time(time["end"])
-
-        if term == "F":
-            for time in meeting["times"]:
-                return False
-            self.timetable_first[meeting.times]
+            index = 0
+            day = time["day_of_week"].lower()
+            if day == "monday":
+                index += 0
+            elif day == "tuesday":
+                index += 48
+            elif day == "wednesday":
+                index += 96
+            elif day == "thursday":
+                index += 144
+            elif day == "friday":
+                index += 192
+            else:
+                raise Exception(f"Could not find day of week {meeting}")
+            start_hour, start_minute = time["start"].split(":")
+            end_hour, end_minute = time["end"].split(":")
+            start = index + int(start_hour) * 2 + (start_minute == "30")
+            end = index + int(end_hour) * 2 + (end_minute == "30")
+            for i in range(start, end):
+                if ((term in "FY" and self.timetable_first[i] is not None)
+                        or (term in "SY" and self.timetable_second[i] is not None)):
+                    return True
+            return False
 
 
 print(Timetable().get_possible_selections(0))
