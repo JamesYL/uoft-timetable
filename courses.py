@@ -1,10 +1,11 @@
 from typing import TypedDict, List, Optional, Literal, Dict
+from typing import NewType
 
 
 class Time(TypedDict):
-    day_of_week: str
-    start: str
-    end: str
+    day_of_week: str  # If async meeting, will show hours per week instead
+    start: str  # None if async meeting
+    end: str  # None if async meeting
 
 
 class Meeting(TypedDict):
@@ -25,3 +26,9 @@ class Term(TypedDict):
 class Course(TypedDict):
     code: str
     terms: List[Term]
+
+
+class Selection(TypedDict):
+    code: str
+    term: Literal["F", "S", "Y"]
+    meetings: List[Meeting]
