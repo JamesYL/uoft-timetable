@@ -30,17 +30,50 @@ class Timetable:
                 self.courses.append(json.load(course_file))
 
     def get_possible_selections(self, index: int) -> List[Selection]:
+        def get_combinations(so_far: List[Selection],
+                             remaining: List[List[Meeting]]) -> List[Selection]:
+            if len(remaining) == 0:
+                return so_far
+            new_so_far = []
+            for item in so_far:
+                for other in remaining[0]:
+                    if self.check_overlap_with_selection(item, other):
+                        continue
+                    ori = {
+                        "code": item["code"],
+                        "term": item["term"],
+                        "meetings": item["meetings"][:]
+                    }
+                    ori["meetings"].append(other)
+                    new_so_far.append(ori)
+            return get_combinations(new_so_far, remaining[1:])
+
         curr_course = self.courses[index]
+        ans: List[Selection] = []
         for term in curr_course["terms"]:
-            all_activities = []
+            all_activities: List[List[Meeting]] = []
             for activity_code in term["meetings"]:
-                curr_activity_meetings = []
+                curr_activity_meetings: List[Meeting] = []
                 for meeting in term["meetings"][activity_code]:
                     if not self.check_overlap(term["term"], meeting):
                         curr_activity_meetings.append(meeting)
                 all_activities.append(curr_activity_meetings)
+            ans += get_combinations([{
+                "code": curr_course["code"],
+                "term": term["term"],
+                "meetings": [item]}
+                for item in all_activities[0:1]], all_activities[1:])
+        return ans
 
-        return all_activities
+    def check_overlap_with_selection(self, prev: Selection, new_meeting: Meeting) -> bool:
+        for meeting in prev["meetings"]:
+            for time in meeting["times"]:
+                if time["start"] == "None":  # Async timetable case
+                    continue
+                # datetime.
+                for new_meeting_time in new_meeting["times"]:
+                    if new_meeting_time["start"] == "None":  # Async timetable case
+                        continue
 
     def check_overlap(self, term: str, meeting: Meeting) -> bool:
         time_periods: List[int] = []
