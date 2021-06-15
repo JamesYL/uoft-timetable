@@ -1,7 +1,7 @@
 from typing import List, Tuple, Literal, Optional
 
 import json
-from courses import Course, Meeting, Selection
+from courses import Course, Meeting, Selection, Time
 import sys
 from constraints import Constraint
 from datetime import time
@@ -27,6 +27,56 @@ class Timetable:
                 continue
             with open(loc) as course_file:
                 self.courses.append(json.load(course_file))
+
+    def all_timetables(self, past: List[Selection], ans: List[List[Selection]], index=0):
+        if index == len(self.courses):
+            if index != 0:
+                ans.append(past[:])
+        else:
+            curr = self.get_possible_selections(index)
+            for selection in curr:
+                past.append(selection)
+                self.add_to_timetable(selection)
+                self.all_timetables(past, ans, index + 1)
+                self.remove_from_timetable(selection)
+                past.pop()
+        return ans
+
+    def add_to_timetable(self, selection: Selection):
+        term = selection["term"]
+        for meeting in selection["meetings"]:
+            for time in meeting["times"]:
+                start, end = self.time_to_index(time)
+                if start == -1:
+                    continue
+                for i in range(start, end):
+                    if ((term in "FY" and self.timetable_first[i] is not None)
+                            or (term in "SY" and self.timetable_second[i] is not None)):
+                        raise Exception(
+                            f"""Trying to add to timetable when slot is used:
+                             {json.dumps([selection, self.timetable_first, self.timetable_second])}""")
+                    if term in "FY":
+                        self.timetable_first[i] = selection
+                    if term in "SY":
+                        self.timetable_second[i] = selection
+
+    def remove_from_timetable(self, selection: Selection):
+        term = selection["term"]
+        for meeting in selection["meetings"]:
+            for time in meeting["times"]:
+                start, end = self.time_to_index(time)
+                if start == -1:
+                    continue
+                for i in range(start, end):
+                    if ((term in "FY" and self.timetable_first[i] is None)
+                            or (term in "SY" and self.timetable_second[i] is None)):
+                        raise Exception(
+                            f"""Trying to remove to timetable when slot isn't used:
+                             {json.dumps([selection, self.timetable_first, self.timetable_second])}""")
+                    if term in "FY":
+                        self.timetable_first[i] = None
+                    if term in "SY":
+                        self.timetable_second[i] = None
 
     def get_possible_selections(self, index: int) -> List[Selection]:
         def get_combinations(so_far: List[Selection],
@@ -73,46 +123,53 @@ class Timetable:
                     continue
                 start1 = time.fromisoformat(time1["start"])
                 end1 = time.fromisoformat(time1["end"])
-                day1 = time["day_of_week"].lower()
+                day1 = time1["day_of_week"].lower()
                 for time2 in new_meeting["times"]:
                     if time2["start"] == "None":  # Async timetable case
                         continue
                     start2 = time.fromisoformat(time2["start"])
                     end2 = time.fromisoformat(time2["end"])
-                    day2 = time["day_of_week"].lower()
+                    day2 = time2["day_of_week"].lower()
                     if day1 == day2 and start1 < end2 and end1 > start2:
                         return True
         return False
 
+    def time_to_index(self, time: Time) -> int:
+        if time["start"] == "None":  # Async timetable case
+            return -1, -1
+        index = 0
+        day = time["day_of_week"].lower()
+        if day == "monday":
+            index += 0
+        elif day == "tuesday":
+            index += 48
+        elif day == "wednesday":
+            index += 96
+        elif day == "thursday":
+            index += 144
+        elif day == "friday":
+            index += 192
+        else:
+            raise Exception(f"Could not find day of week: {time}")
+        start_hour, start_minute = time["start"].split(":")
+        end_hour, end_minute = time["end"].split(":")
+        start = index + int(start_hour) * 2 + (start_minute == "30")
+        end = index + int(end_hour) * 2 + (end_minute == "30")
+        return start, end
+
     def check_overlap(self, term: str, meeting: Meeting) -> bool:
+
         time_periods: List[int] = []
         for time in meeting["times"]:
-            if time["start"] == "None":  # Async timetable case
+            start, end = self.time_to_index(time)
+            if start == -1:  # Async timetable case
                 return False
-            index = 0
-            day = time["day_of_week"].lower()
-            if day == "monday":
-                index += 0
-            elif day == "tuesday":
-                index += 48
-            elif day == "wednesday":
-                index += 96
-            elif day == "thursday":
-                index += 144
-            elif day == "friday":
-                index += 192
-            else:
-                raise Exception(f"Could not find day of week {meeting}")
-            start_hour, start_minute = time["start"].split(":")
-            end_hour, end_minute = time["end"].split(":")
-            start = index + int(start_hour) * 2 + (start_minute == "30")
-            end = index + int(end_hour) * 2 + (end_minute == "30")
             for i in range(start, end):
                 if ((term in "FY" and self.timetable_first[i] is not None)
                         or (term in "SY" and self.timetable_second[i] is not None)):
                     return True
-            return False
+        return False
 
 
-# Timetable().get_possible_selections(0)
-print(json.dumps(Timetable().get_possible_selections(0)))
+res = Timetable().all_timetables([], [])
+print(len(res))
