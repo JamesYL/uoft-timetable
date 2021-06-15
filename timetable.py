@@ -7,7 +7,6 @@ from constraints import Constraint
 from datetime import time
 from os import listdir
 from os.path import isfile, join
-from datetime import datetime
 
 course_code = str
 term = Literal["F", "S", "Y"]
@@ -46,6 +45,7 @@ class Timetable:
                     }
                     ori["meetings"].append(other)
                     new_so_far.append(ori)
+
             return get_combinations(new_so_far, remaining[1:])
 
         curr_course = self.courses[index]
@@ -58,22 +58,31 @@ class Timetable:
                     if not self.check_overlap(term["term"], meeting):
                         curr_activity_meetings.append(meeting)
                 all_activities.append(curr_activity_meetings)
-            ans += get_combinations([{
-                "code": curr_course["code"],
-                "term": term["term"],
-                "meetings": [item]}
-                for item in all_activities[0:1]], all_activities[1:])
+            if len(all_activities) > 0:
+                ans += get_combinations([{
+                    "code": curr_course["code"],
+                    "term": term["term"],
+                    "meetings": [item]}
+                    for item in all_activities[0]], all_activities[1:])
         return ans
 
     def check_overlap_with_selection(self, prev: Selection, new_meeting: Meeting) -> bool:
         for meeting in prev["meetings"]:
-            for time in meeting["times"]:
-                if time["start"] == "None":  # Async timetable case
+            for time1 in meeting["times"]:
+                if time1["start"] == "None":  # Async timetable case
                     continue
-                # datetime.
-                for new_meeting_time in new_meeting["times"]:
-                    if new_meeting_time["start"] == "None":  # Async timetable case
+                start1 = time.fromisoformat(time1["start"])
+                end1 = time.fromisoformat(time1["end"])
+                day1 = time["day_of_week"].lower()
+                for time2 in new_meeting["times"]:
+                    if time2["start"] == "None":  # Async timetable case
                         continue
+                    start2 = time.fromisoformat(time2["start"])
+                    end2 = time.fromisoformat(time2["end"])
+                    day2 = time["day_of_week"].lower()
+                    if day1 == day2 and start1 < end2 and end1 > start2:
+                        return True
+        return False
 
     def check_overlap(self, term: str, meeting: Meeting) -> bool:
         time_periods: List[int] = []
@@ -105,4 +114,5 @@ class Timetable:
             return False
 
 
-print(Timetable().get_possible_selections(0))
+# Timetable().get_possible_selections(0)
+print(json.dumps(Timetable().get_possible_selections(0)))

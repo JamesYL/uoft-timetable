@@ -20,6 +20,7 @@ for (const course of document.querySelectorAll(".perCourse")) {
     }
     const currMeeting = {};
     currMeeting.instructors = meeting.querySelector(".colInst").innerText;
+    if (currMeeting.instructors.trim() === "—") currMeeting.instructors = "";
     currMeeting.space = meeting.querySelector(".colAvail").innerText;
     currMeeting.waitlist = meeting.querySelector(".colWait").innerText;
     currMeeting.notes = meeting.querySelector(".colNotes").innerText;
