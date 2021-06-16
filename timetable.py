@@ -1,7 +1,7 @@
 from typing import List, Tuple, Literal, Optional
 
 import json
-from courses import Course, Meeting, Selection, Time, Term
+from courses import Course, Meeting, Selection, Time, Term, FlattenedSelection
 import sys
 from constraints import Constraint
 from datetime import time
@@ -76,7 +76,7 @@ class Timetable:
                     term["meetings"][activity_type] = filtered
             course["terms"] = all_terms
 
-    def all_timetables(self, past: List[Selection], ans: List[List[Selection]], index=0):
+    def all_timetables(self, past: List[Selection] = [], ans: List[List[Selection]] = [], index=0) -> List[List[Selection]]:
         if index == len(self.courses):
             if index != 0:
                 ans.append(past[:])
@@ -206,7 +206,6 @@ class Timetable:
         return start, end
 
     def check_overlap(self, term: str, meeting: Meeting) -> bool:
-
         time_periods: List[int] = []
         for time in meeting["times"]:
             start, end = self.time_to_index(time)
@@ -218,6 +217,32 @@ class Timetable:
                     return True
         return False
 
+    def flatten_selection(self, selection: Selection) -> List[FlattenedSelection]:
+        ans = []
+        for meeting in selection["meetings"]:
+            for t in meeting["times"]:
+                ans.append({
+                    "code": selection["code"],
+                    "term": selection["term"],
+                    "instructors": [item.strip() for item in meeting["instructors"].split("\n")],
+                    "space": meeting["space"],
+                    "waitlist": meeting["waitlist"],
+                    "notes": meeting["notes"],
+                    "day_of_week": t["day_of_week"],
+                    "start": t["start"],
+                    "end": t["end"],
+                    "activity": meeting["activity_type"] + meeting["activity_code"]
+                })
+        return ans
 
-res = Timetable().all_timetables([], [])
-print(len(res))
+
+table = Timetable()
+timetables = table.all_timetables()
+filtered = []
+for list_of_selections in timetables:
+    total = []
+    for selection in list_of_selections:
+        for item in table.flatten_selection(selection):
+            total.append(item)
+    filtered.append(total)
+print(filtered[0])

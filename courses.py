@@ -32,3 +32,15 @@ class Selection(TypedDict):
     code: str
     term: Literal["F", "S", "Y"]
     meetings: List[Meeting]
+
+class FlattenedSelection(TypedDict):
+    code: str
+    term: Literal["F", "S", "Y"]
+    instructors: List[str]
+    space: str
+    waitlist: str
+    notes: str
+    day_of_week: str  # If async meeting, will show hours per week instead
+    start: str  # None if async meeting
+    end: str  # None if async meeting
+    activity: str
