@@ -4,11 +4,12 @@
   "course_constraint": {
     "CSC373": {
       "term": "F",
-      "exclude": ["LEC0102"]
+      "exclude": []
     },
     "CSC369": {
       "term": "S",
       "exclude": []
     }
-  }
+  },
+  "commute_time": 120
 }

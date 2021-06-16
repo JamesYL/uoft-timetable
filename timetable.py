@@ -235,14 +235,92 @@ class Timetable:
                 })
         return ans
 
+    def display_nicely(self, selections: List[FlattenedSelection]) -> str:
+        ans = []
+        first = sorted(
+            filter(lambda x: x["term"] in "FY", selections), key=self.sort_selection_comparator)
+        second = sorted(
+            filter(lambda x: x["term"] in "SY", selections), key=self.sort_selection_comparator)
+        ans.append("—————————————————————————————————————————————")
+        for s in first:
+            ans.append(
+                f"{s['code']}-{s['term']} {s['activity']} on {s['day_of_week']}, {s['start']} to {s['end']}, by {s['instructors']}")
+        ans.append("—————————————————————————————————————————————")
+        for s in second:
+            ans.append(
+                f"{s['code']}-{s['term']} {s['activity']} on {s['day_of_week']}, {s['start']} to {s['end']}, by {s['instructors']}")
+        ans.append("—————————————————————————————————————————————")
+        return "\n".join(ans)
+
+    def get_time(self, selections: List[FlattenedSelection]) -> int:
+        total_time = 0
+        visited_weekdays = set()
+        for item in selections:
+            visited_weekdays.add(item["day_of_week"])
+        days = ["monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday"]
+        for item in visited_weekdays:
+            if item.lower() in days:
+                total_time += self.constraint["commute_time"]
+        for i in range(len(selections) - 1):
+            item = selections[i]
+            item_after = selections[i+1]
+            day = item["day_of_week"].lower()
+            day_after = item_after["day_of_week"].lower()
+            if day not in days:
+                break
+            elif day == day_after:
+                hour1, minute1 = item_after["start"].split(":")
+                hour2, minute2 = item["end"].split(":")
+                total_time += ((int(hour1) * 60 + int(minute1)) -
+                               (int(hour2) * 60 + int(minute2)))
+        return total_time
+
+    def sort_selection_comparator(self, s: Selection):
+        weekday_to_int = {
+            "monday": 0,
+            "tuesday": 1,
+            "wednesday": 2,
+            "thursday": 3,
+            "friday": 4
+        }
+        if s["start"] == "None":
+            return (100, 100)
+        day = weekday_to_int[s["day_of_week"].lower()]
+        start = time.fromisoformat(s["start"])
+        end = time.fromisoformat(s["end"])
+        return (day, start)
+
+    def sort_by_wasted_time(self, items: List[List[FlattenedSelection]]) -> List[List[FlattenedSelection]]:
+        def comparator(selections: List[FlattenedSelection]):
+            return self.get_time(sorted(
+                filter(lambda x: x["term"] in "FY", selections), key=self.sort_selection_comparator)) + self.get_time(sorted(
+                    filter(lambda x: x["term"] in "SY", selections), key=self.sort_selection_comparator))
+        return sorted(items, key=comparator)
+
 
 table = Timetable()
 timetables = table.all_timetables()
-filtered = []
+flattened = []
 for list_of_selections in timetables:
     total = []
     for selection in list_of_selections:
         for item in table.flatten_selection(selection):
             total.append(item)
-    filtered.append(total)
-print(filtered[0])
+    flattened.append(total)
+filtered = table.sort_by_wasted_time(flattened)
+times = {}
+smallest = 100000
+for selections in filtered:
+    total = table.get_time(sorted(
+        filter(lambda x: x["term"] in "FY", selections), key=table.sort_selection_comparator)) + table.get_time(sorted(
+            filter(lambda x: x["term"] in "SY", selections), key=table.sort_selection_comparator))
+    if total not in times:
+        times[total] = []
+    times[total].append(selections)
+    if total < smallest:
+        smallest = total
+print(len(times[smallest]))

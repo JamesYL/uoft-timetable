@@ -10,3 +10,4 @@ class Constraint(TypedDict):
     smallest_start_time: str
     biggest_end_time: str
     course_constraint: Dict[str, CourseConstraint]
+    commute_time: int  # in minutes (both ways)
