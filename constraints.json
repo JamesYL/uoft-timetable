@@ -3,10 +3,12 @@
   "biggest_end_time": "21:00",
   "course_constraint": {
     "CSC373": {
-      "term": "F"
+      "term": "F",
+      "exclude": ["LEC0102"]
     },
     "CSC369": {
-      "term": "S"
+      "term": "S",
+      "exclude": []
     }
   }
 }

@@ -3,7 +3,7 @@ from typing import TypedDict, List, Optional, Literal, Dict
 
 class CourseConstraint(TypedDict):
     term: Literal["F", "S", "Y"]
-    exclude: Optional[List[str]]  # List of sections like: [LEC0101, PRA0301]
+    exclude: List[str]  # List of sections like: [LEC0101, PRA0301]
 
 
 class Constraint(TypedDict):

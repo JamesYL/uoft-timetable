@@ -39,11 +39,13 @@ class Timetable:
                 self.courses.append(json.load(course_file))
 
         # Filtering stuff based on constraints
+        course_constraints = self.constraint["course_constraint"]
         for course in self.courses:
             all_terms: List[Term] = []
+            code = course["code"]
             for term in course["terms"]:
-                if (course["code"] in self.constraint["course_constraint"]
-                        and term["term"] != self.constraint["course_constraint"][course["code"]]["term"]):
+                if (code in course_constraints
+                        and term["term"] != course_constraints[code]["term"]):
                     continue
                 all_terms.append(term)
                 for activity_type in term["meetings"]:
@@ -51,6 +53,15 @@ class Timetable:
                     filtered: List[Meeting] = []
                     for meeting in meetings:
                         is_good_meeting = True
+                        if code in course_constraints:
+                            for section in course_constraints[code]["exclude"]:
+                                activity_type = section[0:3]
+                                activity_code = section[3:]
+                                if activity_code == meeting["activity_code"] and activity_type == meeting["activity_type"]:
+                                    is_good_meeting = False
+                                    break
+                        if not is_good_meeting:
+                            continue
                         for t in meeting["times"]:
                             if t["start"] == "None":
                                 continue
