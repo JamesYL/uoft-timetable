@@ -1,12 +1,13 @@
 from typing import List, Tuple, Literal, Optional
 
 import json
-from courses import Course, Meeting, Selection, Time
+from courses import Course, Meeting, Selection, Time, Term
 import sys
 from constraints import Constraint
 from datetime import time
 from os import listdir
 from os.path import isfile, join
+from constraints import Constraint
 
 course_code = str
 term = Literal["F", "S", "Y"]
@@ -20,13 +21,49 @@ class Timetable:
         self.timetable_first: List[Optional[Meeting]] = [None] * 24 * 2 * 5
         self.timetable_second: List[Optional[Meeting]] = [None] * 24 * 2 * 5
 
+        with open("./constraints.json") as constraint_f:
+            self.constraint: Constraint = json.load(constraint_f)
+
         self.courses: List[Course] = []
+
+        smallest_time = time.fromisoformat(
+            self.constraint["smallest_start_time"])
+        biggest_time = time.fromisoformat(
+            self.constraint["biggest_end_time"])
+
         for f in listdir("courses"):
             loc = join("courses", f)
             if not isfile(loc):
                 continue
             with open(loc) as course_file:
                 self.courses.append(json.load(course_file))
+
+        # Filtering stuff based on constraints
+        for course in self.courses:
+            all_terms: List[Term] = []
+            for term in course["terms"]:
+                if (course["code"] in self.constraint["course_constraint"]
+                        and term["term"] != self.constraint["course_constraint"][course["code"]]["term"]):
+                    continue
+                all_terms.append(term)
+                for activity_type in term["meetings"]:
+                    meetings = term["meetings"][activity_type]
+                    filtered: List[Meeting] = []
+                    for meeting in meetings:
+                        is_good_meeting = True
+                        for t in meeting["times"]:
+                            if t["start"] == "None":
+                                continue
+                            start = time.fromisoformat(t["start"])
+                            end = time.fromisoformat(t["end"])
+                            if smallest_time > start or biggest_time < end:
+                                is_good_meeting = False
+                                break
+                        if is_good_meeting:
+                            filtered.append(meeting)
+
+                    term["meetings"][activity_type] = filtered
+            course["terms"] = all_terms
 
     def all_timetables(self, past: List[Selection], ans: List[List[Selection]], index=0):
         if index == len(self.courses):
@@ -54,7 +91,7 @@ class Timetable:
                             or (term in "SY" and self.timetable_second[i] is not None)):
                         raise Exception(
                             f"""Trying to add to timetable when slot is used:
-                             {json.dumps([selection, self.timetable_first, self.timetable_second])}""")
+                            {json.dumps([selection, self.timetable_first, self.timetable_second])}""")
                     if term in "FY":
                         self.timetable_first[i] = selection
                     if term in "SY":
@@ -72,7 +109,7 @@ class Timetable:
                             or (term in "SY" and self.timetable_second[i] is None)):
                         raise Exception(
                             f"""Trying to remove to timetable when slot isn't used:
-                             {json.dumps([selection, self.timetable_first, self.timetable_second])}""")
+                            {json.dumps([selection, self.timetable_first, self.timetable_second])}""")
                     if term in "FY":
                         self.timetable_first[i] = None
                     if term in "SY":
@@ -102,9 +139,9 @@ class Timetable:
         ans: List[Selection] = []
         for term in curr_course["terms"]:
             all_activities: List[List[Meeting]] = []
-            for activity_code in term["meetings"]:
+            for activity_type in term["meetings"]:
                 curr_activity_meetings: List[Meeting] = []
-                for meeting in term["meetings"][activity_code]:
+                for meeting in term["meetings"][activity_type]:
                     if not self.check_overlap(term["term"], meeting):
                         curr_activity_meetings.append(meeting)
                 all_activities.append(curr_activity_meetings)
