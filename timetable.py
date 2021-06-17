@@ -244,11 +244,11 @@ class Timetable:
         ans.append("—————————————————————————————————————————————")
         for s in first:
             ans.append(
-                f"{s['code']}-{s['term']} {s['activity']} on {s['day_of_week']}, {s['start']} to {s['end']}, by {s['instructors']}")
+                f"{s['code']}-{s['term']} {s['activity']} on {s['day_of_week']}, {s['start']} to {s['end']}")
         ans.append("—————————————————————————————————————————————")
         for s in second:
             ans.append(
-                f"{s['code']}-{s['term']} {s['activity']} on {s['day_of_week']}, {s['start']} to {s['end']}, by {s['instructors']}")
+                f"{s['code']}-{s['term']} {s['activity']} on {s['day_of_week']}, {s['start']} to {s['end']}")
         ans.append("—————————————————————————————————————————————")
         return "\n".join(ans)
 
@@ -323,4 +323,23 @@ for selections in filtered:
     times[total].append(selections)
     if total < smallest:
         smallest = total
-print(len(times[smallest]))
+if len(filtered) == 0:
+    print("No timetables found")
+else:
+    curr = 1
+    print(
+        f"Currently displaying: {curr}/{len(times[smallest])}")
+    print(table.display_nicely(times[smallest][0]))
+    item = input("Enter to go forward, 1 to exit, 0 to go back\n")
+    print("\n\n\n")
+    while item != "1":
+        if item == "0":
+            if curr > 1:
+                curr -= 1
+        else:
+            curr += 1
+        print(
+            f"Currently displaying: {curr}/{len(times[smallest])}")
+        print(table.display_nicely(times[smallest][curr - 1]))
+        item = input("Enter to go forward, 1 to exit, 0 to go back\n")
+        print("\n\n\n")
