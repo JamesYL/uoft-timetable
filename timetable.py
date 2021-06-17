@@ -267,11 +267,13 @@ class Timetable:
             filter(lambda x: x["term"] in "FY", selections), key=self.sort_selection_comparator)
         second = sorted(
             filter(lambda x: x["term"] in "SY", selections), key=self.sort_selection_comparator)
-        ans.append("—————————————————————————————————————————————")
+        ans.append(
+            "————————————————————————————————————————————— First Term —————————————————————————————————————————————")
         for s in first:
             ans.append(
                 f"{s['code']}-{s['term']} {s['activity']} on {s['day_of_week']}, {s['start']} to {s['end']}")
-        ans.append("—————————————————————————————————————————————")
+        ans.append(
+            "————————————————————————————————————————————— Second Term —————————————————————————————————————————————")
         for s in second:
             ans.append(
                 f"{s['code']}-{s['term']} {s['activity']} on {s['day_of_week']}, {s['start']} to {s['end']}")
@@ -358,7 +360,7 @@ else:
     print(table.display_nicely(times[smallest][0]))
     item = input("Enter to go forward, 1 to exit, 0 to go back\n")
     print("\n\n\n")
-    while item != "1":
+    while True:
         if item == "0":
             if curr > 1:
                 curr -= 1
@@ -369,4 +371,6 @@ else:
             f"Currently displaying: {curr}/{len(times[smallest])} with {smallest/60} hours wasted per week (both terms)")
         print(table.display_nicely(times[smallest][curr - 1]))
         item = input("Enter to go forward, 1 to exit, 0 to go back\n")
+        if item == "1":
+            break
         print("\n\n\n")
