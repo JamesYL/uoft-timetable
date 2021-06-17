@@ -3,7 +3,7 @@
   "biggest_end_time": "21:00",
   "course_constraint": {
     "BIO130": {
-      "term": "F",
+      "term": "S",
       "exclude": []
     }
   },
