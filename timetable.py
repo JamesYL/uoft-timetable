@@ -350,7 +350,7 @@ for selections in filtered:
     if total < smallest:
         smallest = total
 if len(filtered) == 0:
-    print("No timetables found")
+    print("No possible timetable can be generated with current constraints and courses")
 else:
     curr = 1
     print(
@@ -363,10 +363,10 @@ else:
             if curr > 1:
                 curr -= 1
         else:
-            if curr < len(times[smallest]) - 1:
+            if curr < len(times[smallest]):
                 curr += 1
         print(
-            f"Currently displaying: {curr}/{len(times[smallest])}")
+            f"Currently displaying: {curr}/{len(times[smallest])} with {smallest/60} hours wasted per week (both terms)")
         print(table.display_nicely(times[smallest][curr - 1]))
         item = input("Enter to go forward, 1 to exit, 0 to go back\n")
         print("\n\n\n")

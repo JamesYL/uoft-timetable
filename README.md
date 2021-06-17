@@ -1,11 +1,76 @@
-# Build timetable easily uoft
+# Timetable builder UTSG ArtSci
 
-## How to make it work
+## What is it
 
-Go to timetable, enter in a course code and search for courses. The course code should be exact like MAT137, NOT MAT or MAT137H1-F. Drag the downloaded json file (make sure the name is exactly the course code like "MAT137.json") into the courses folder.  
-Running timetable.py will generate all possible timetables based on the courses in the courses folder.
+Easily find a timetable that minimizes wasted time (commute time and time between classes) for UTSG ArtSci courses
+
+## How to Start
+
+1. Clone this project.
+2. Delete all files in `./courses` directory.
+3. Go to ArtSci's [timetable](https://timetable.iit.artsci.utoronto.ca/) with Chrome.
+4. Enter in a course code and search for courses. The course code should be exact like `MAT137`, **NOT** `MAT` and **NOT** `MAT137H1-F`. **Don't** add any other filters either.
+5. Open console by pressing `F12` and copy paste the code in `courses.js` into console. If Chrome asks you for permission for downloading, accept it.
+6. You should see a `{course-code}.json` file downloaded such as `MAT137.json`.
+7. Repeat steps 4 - 6 for all the courses that you want.
+8. Drag all the `.json` files into `./courses` in the project directory. Make sure there aren't any duplicates or any unwanted courses.
+9. Setup your constraints, instructions [here](#constraints).
+10. Run the command `python ./timetable.py` with the project directory as the working directory. You should see output on screen telling you useful information.
+
+If after step 10 and no output at all is showing up, it's probably because it is calculating too many possibilities (this can be something like 100<sup>10</sup> possibilities). To prevent this issue, make better [constraints](#constraints). Similarly, if there are too many outputs, make better [constraints](#constraints).
+
+## Constraints
+
+Constraints fix issues by reducing the number of possible timetables. For example, if a course must be in first term and not second term, setting a constraint for that is helpful. To do so, edit the `./constraints.json` file.
+
+```json
+{
+  "smallest_start_time": "09:00",
+  "biggest_end_time": "21:00",
+  "course_constraint": {
+    "BIO130": {
+      "term": "F",
+      "exclude": ["LEC0101", "TUT0304", "PRA0202", "LEC0202"]
+    },
+    "ECO101": {
+      "term": "S",
+      "exclude": []
+    }
+  },
+  "commute_time": 120
+}
+```
+
+### Global constraints
+
+**`smallest_start_time`**: Earliest start time a course can be. It must follow a 24 hour time format of `mm:ss`. In this example, the earliest start time for a course is 9:00 am.
+
+**`biggest_end_time`**: Latest end time a course can be. Same format as before. Example is the latest time for a course is 9:00 pm.
+
+**`course_constraint`**: Each key must be a valid course code mentioned in step 4 of [How to Start](#how-to-start). The key must refer to an object with properties found [here](#constraints-for-courses). This key is **optional**! If there are no constraints a course, do not have the key for it.
+
+**`commute_time`**: Commute time in minutes for both ways
+
+### Constraints for Courses
+
+**`term`**: Either `F`, `S`, or `Y` (First term, second term, both terms respectively). This forces the course to be in that specific term.
+
+**`exclude`**: Exclude certain activites for the course. This means the timetable will not contain these sections. Each activity section must follow the exact format as shown in the ArtSci timetable. This means `{activity type}{activity code}` -> `LEC0101`. If there are no exclusions, leave it as an empty array `[]`.
+
+## Notes
+
+Try to add as many course constraints as possible.
+
+- Some courses must be taken in first term or must be taken in second term due to prerequsites/corequsuites/exclusions, but offered in both terms
+- Maybe exclude sections due to no priority, no space, bad instructors, delivery method, bad time
+
+The program automatically combines sections that have the same type and same time already, so you don't have to exclude "duplicate" sections.
+
+By adding more constraints, the "time wasted" increases since the program is designed to find a timetable that minimizes commute time and time spent between classes.
+
+If the program takes too long to load, you will be forced to add more constraints since that reduces the number of possibilities to consider (The algorithm is unefficient and the code is made of spaghetti).
 
 ## Requirements
 
 - Python 3.8
-- Use Chrome
+- Chrome
