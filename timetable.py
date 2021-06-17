@@ -76,6 +76,32 @@ class Timetable:
                     term["meetings"][activity_type] = filtered
             course["terms"] = all_terms
 
+        # Combine items with same time and course
+        for course in self.courses:
+            code = course["code"]
+            for term in course["terms"]:
+                for activity_type in term["meetings"]:
+                    meetings = term["meetings"][activity_type]
+                    combined: List[Meeting] = []
+                    while len(meetings):
+                        same_time = [meetings.pop()]
+                        for i in range(len(meetings) - 1, -1, -1):
+                            curr = meetings[i]
+                            if curr["times"] == same_time[0]["times"]:
+                                same_time.append(curr)
+                                meetings.pop(i)
+                        combined.append({
+                            "instructors": "/".join([m["instructors"] for m in same_time]),
+                            "space": "/".join([m["space"] for m in same_time]),
+                            "waitlist": "/".join([m["waitlist"] for m in same_time]),
+                            "notes": "/".join([m["notes"] for m in same_time]),
+                            "times": same_time[0]["times"],
+                            "activity_type": activity_type,
+                            "activity_code": "/".join([m["activity_code"] for m in same_time])
+                        })
+
+                    term["meetings"][activity_type] = combined
+
     def all_timetables(self, past: List[Selection] = [], ans: List[List[Selection]] = [], index=0) -> List[List[Selection]]:
         if index == len(self.courses):
             if index != 0:
@@ -328,7 +354,7 @@ if len(filtered) == 0:
 else:
     curr = 1
     print(
-        f"Currently displaying: {curr}/{len(times[smallest])}")
+        f"Currently displaying: {curr}/{len(times[smallest])} with {smallest/60} hours wasted per week (both terms)")
     print(table.display_nicely(times[smallest][0]))
     item = input("Enter to go forward, 1 to exit, 0 to go back\n")
     print("\n\n\n")
@@ -337,7 +363,8 @@ else:
             if curr > 1:
                 curr -= 1
         else:
-            curr += 1
+            if curr < len(times[smallest]) - 1:
+                curr += 1
         print(
             f"Currently displaying: {curr}/{len(times[smallest])}")
         print(table.display_nicely(times[smallest][curr - 1]))

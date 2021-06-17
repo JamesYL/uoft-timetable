@@ -1,13 +1,9 @@
 {
-  "smallest_start_time": "13:00",
+  "smallest_start_time": "09:00",
   "biggest_end_time": "21:00",
   "course_constraint": {
-    "CSC373": {
+    "BIO130": {
       "term": "F",
-      "exclude": []
-    },
-    "CSC369": {
-      "term": "S",
       "exclude": []
     }
   },
