@@ -1,21 +1,12 @@
 from timetable import Timetable
 
 table = Timetable()
-timetables = table.all_timetables()
-flattened = []
-for list_of_selections in timetables:
-    total = []
-    for selection in list_of_selections:
-        for item in table.flatten_selection(selection):
-            total.append(item)
-    flattened.append(total)
-filtered = table.sort_by_wasted_time(flattened)
+filtered = table.sort_by_wasted_time(table.flatten_timetables(
+    table.all_timetables()))
 times = {}
 smallest = 100000
 for selections in filtered:
-    total = table.get_time(sorted(
-        filter(lambda x: x.term in "FY", selections), key=table.sort_selection_comparator)) + table.get_time(sorted(
-            filter(lambda x: x.term in "SY", selections), key=table.sort_selection_comparator))
+    total = table.get_time_unsplit(selections)
     if total not in times:
         times[total] = []
     times[total].append(selections)

@@ -146,6 +146,16 @@ class Timetable:
                                        meeting.activity_type + meeting.activity_code, t.working_hours, t.is_sync))
         return ans
 
+    def flatten_timetables(self, timetables: List[List[Selection]]) -> List[List[FlattenedSelection]]:
+        flattened = []
+        for list_of_selections in timetables:
+            total = []
+            for selection in list_of_selections:
+                for item in self.flatten_selection(selection):
+                    total.append(item)
+            flattened.append(total)
+        return flattened
+
     def all_timetables(self, past: List[Selection] = [], ans: List[List[Selection]] = [], index=0) -> List[List[Selection]]:
         if index == len(self.courses):
             if index != 0:
@@ -159,6 +169,7 @@ class Timetable:
                 self.remove_from_timetable(selection)
                 past.pop()
         return ans
+
 
     def get_combinations(self, so_far: List[Selection],
                          remaining: List[List[Meeting]]) -> List[Selection]:
@@ -216,7 +227,6 @@ class Timetable:
         for item in selections:
             if not item.is_sync:
                 visited_weekdays.add(item.working_hours[0])
-        print("test")
         total_time += self.constraint.commute_time * len(visited_weekdays)
 
         for i in range(len(selections) - 1):
@@ -229,6 +239,14 @@ class Timetable:
                                 item_after.working_hours[2].minute) -
                                (item.working_hours[1].hour * 60 +
                                 item.working_hours[2].minute))
+        return total_time
+
+    def get_time_unsplit(self, selections: List[FlattenedSelection]) -> int:
+        first_term = sorted(
+            filter(lambda x: x.term in "FY", selections), key=self.sort_selection_comparator)
+        second_term = sorted(
+            filter(lambda x: x.term in "SY", selections), key=self.sort_selection_comparator)
+        total_time = self.get_time(first_term) + self.get_time(second_term)
         return total_time
 
     def sort_selection_comparator(self, s: FlattenedSelection):
