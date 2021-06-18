@@ -10,8 +10,8 @@ for (const course of document.querySelectorAll(".perCourse")) {
       times.day_of_week = day.querySelector(".weekDay").innerText;
       const startAndEndTimes = day.querySelectorAll("time");
       if (startAndEndTimes.length == 0) {
-        times.start = "None";
-        times.end = "None";
+        times.start = null;
+        times.end = null;
       } else {
         times.start = startAndEndTimes[0].innerText;
         times.end = startAndEndTimes[1].innerText;
@@ -20,7 +20,13 @@ for (const course of document.querySelectorAll(".perCourse")) {
     }
     const currMeeting = {};
     currMeeting.instructors = meeting.querySelector(".colInst").innerText;
-    if (currMeeting.instructors.trim() === "—") currMeeting.instructors = "";
+    if (currMeeting.instructors.trim() === "—") currMeeting.instructors = [];
+    else {
+      currMeeting.instructors = currMeeting.instructors
+        .trim()
+        .split("\n")
+        .map((item) => item.trim());
+    }
     currMeeting.space = meeting.querySelector(".colAvail").innerText;
     currMeeting.waitlist = meeting.querySelector(".colWait").innerText;
     currMeeting.notes = meeting.querySelector(".colNotes").innerText;

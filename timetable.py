@@ -1,17 +1,58 @@
-from typing import List, Tuple, Literal, Optional
+from typing import List, Tuple, Literal, Optional, NewType
 
 import json
-from courses import Course, Meeting, Selection, Time, Term, FlattenedSelection
+from courses import Course, Meeting, Time, Term, parse_courses_json, WorkingHours
 import sys
-from constraints import Constraint
+from constraints import Constraint, filter_course
 from datetime import time
 from os import listdir
 from os.path import isfile, join
-from constraints import Constraint
+from constraints import parse_constraints_json
 
-course_code = str
-term = Literal["F", "S", "Y"]
-selections = List[Tuple[course_code, term, Meeting]]
+TermType = NewType("TermType", str)  # F, S, or Y
+
+
+class Selection:
+    def __init__(self, code: str, term: TermType, meetings: List[Meeting]):
+        self.code = code
+        self.term = term
+        self.meetings = meetings
+
+    def __str__(self):
+        return f"{self.code} {self.term} {[str(item) for item in self.meetings]}"
+
+
+class FlattenedSelection:
+    def __init__(self, code: str, term: TermType, instructors: List[str], space: str,
+                 waitlist: str, notes: str, activity: str, working_hours: WorkingHours, is_sync: bool):
+        self.code = code
+        self.term = term
+        self.instructors = instructors
+        self.space = space
+        self.waitlist = waitlist
+        self.notes = notes
+        self.working_hours = working_hours
+        self.activity = activity
+        self.is_sync = is_sync
+
+    def __str__(self):
+        if not self.is_sync:
+            return f"{self.code}-{self.term} {self.activity} for {self.working_hours}"
+        index_to_weekday = {1: "Monday", 2: "Tuesday",
+                            3: "Wednesday", 4: "Thursday", 5: "Friday"}
+        start_hour = str(self.working_hours[1].hour)
+        if len(start_hour) == 1:
+            start_hour = f"0{start_hour}"
+        end_hour = str(self.working_hours[2].hour)
+        if len(end_hour) == 1:
+            end_hour = f"0{end_hour}"
+        start_minute = str(self.working_hours[1].minute)
+        if len(start_minute) == 1:
+            start_minute = f"0{start_minute}"
+        end_minute = str(self.working_hours[2].minute)
+        if len(end_minute) == 1:
+            end_minute = f"0{end_minute}"
+        return f"{self.code}-{self.term} {self.activity} on {index_to_weekday[self.working_hours[0]]} from {start_hour}:{start_minute} to {end_hour}:{end_minute}"
 
 
 class Timetable:
@@ -21,86 +62,89 @@ class Timetable:
         self.timetable_first: List[Optional[Meeting]] = [None] * 24 * 2 * 5
         self.timetable_second: List[Optional[Meeting]] = [None] * 24 * 2 * 5
 
-        with open("./constraints.json") as constraint_f:
-            self.constraint: Constraint = json.load(constraint_f)
+        self.constraint = parse_constraints_json()
+        self.courses: List[Course] = parse_courses_json()
+        for item in self.courses:
+            filter_course(self.constraint, item)
+            item.simplify()
 
-        self.courses: List[Course] = []
+    def time_to_index(self, t: Time) -> int:
+        if not t.is_sync:
+            return 0, 0
+        index = 0
+        working_hours: Tuple[int, time, time] = t.working_hours
+        day, start, end = working_hours
+        day_to_index = {1: 0, 2: 48, 3: 96, 4: 144, 5: 192}
+        index = day_to_index[day]
+        s = index + start.hour * 2 + (start.minute == 30)
+        e = index + end.hour * 2 + (end.minute == 30)
+        return s, e
 
-        smallest_time = time.fromisoformat(
-            self.constraint["smallest_start_time"])
-        biggest_time = time.fromisoformat(
-            self.constraint["biggest_end_time"])
+    def add_to_timetable(self, selection: Selection):
+        term = selection.term
+        for meeting in selection.meetings:
+            for time in meeting.times:
+                start, end = self.time_to_index(time)
+                for i in range(start, end):
+                    if ((term in "FY" and self.timetable_first[i] is not None)
+                            or (term in "SY" and self.timetable_second[i] is not None)):
+                        raise Exception(
+                            f"Trying to add to timetable when slot is used: {selection}")
+                    if term in "FY":
+                        self.timetable_first[i] = selection
+                    if term in "SY":
+                        self.timetable_second[i] = selection
 
-        for f in listdir("courses"):
-            loc = join("courses", f)
-            if not isfile(loc):
-                continue
-            with open(loc) as course_file:
-                self.courses.append(json.load(course_file))
+    def remove_from_timetable(self, selection: Selection):
+        term = selection.term
+        for meeting in selection.meetings:
+            for time in meeting.times:
+                start, end = self.time_to_index(time)
+                for i in range(start, end):
+                    if ((term in "FY" and self.timetable_first[i] is None)
+                            or (term in "SY" and self.timetable_second[i] is None)):
+                        raise Exception(
+                            f"Trying to removed from timetable when slot isn't used: {selection}")
+                    if term in "FY":
+                        self.timetable_first[i] = None
+                    if term in "SY":
+                        self.timetable_second[i] = None
 
-        # Filtering stuff based on constraints
-        course_constraints = self.constraint["course_constraint"]
-        for course in self.courses:
-            all_terms: List[Term] = []
-            code = course["code"]
-            for term in course["terms"]:
-                if (code in course_constraints
-                        and term["term"] != course_constraints[code]["term"]):
+    def check_overlap(self, term: TermType, meeting: Meeting) -> bool:
+        time_periods: List[int] = []
+        for time in meeting.times:
+            if not time.is_sync:
+                return False
+            start, end = self.time_to_index(time)
+            for i in range(start, end):
+                if ((term in "FY" and self.timetable_first[i] is not None)
+                        or (term in "SY" and self.timetable_second[i] is not None)):
+                    return True
+        return False
+
+    def check_overlap_with_selection(self, prev: Selection, new_meeting: Meeting) -> bool:
+        for meeting in prev.meetings:
+            for time1 in meeting.times:
+                if not time1.is_sync:
                     continue
-                all_terms.append(term)
-                for activity_type in term["meetings"]:
-                    meetings = term["meetings"][activity_type]
-                    filtered: List[Meeting] = []
-                    for meeting in meetings:
-                        is_good_meeting = True
-                        if code in course_constraints:
-                            for section in course_constraints[code]["exclude"]:
-                                activity_type = section[0:3]
-                                activity_code = section[3:]
-                                if activity_code == meeting["activity_code"] and activity_type == meeting["activity_type"]:
-                                    is_good_meeting = False
-                                    break
-                        if not is_good_meeting:
-                            continue
-                        for t in meeting["times"]:
-                            if t["start"] == "None":
-                                continue
-                            start = time.fromisoformat(t["start"])
-                            end = time.fromisoformat(t["end"])
-                            if smallest_time > start or biggest_time < end:
-                                is_good_meeting = False
-                                break
-                        if is_good_meeting:
-                            filtered.append(meeting)
+                for time2 in new_meeting.times:
+                    if not time2.is_sync:
+                        continue
+                    if (time1.working_hours[0] == time2.working_hours[0] and
+                        time1.working_hours[1] < time2.working_hours[2] and
+                            time1.working_hours[2] > time2.working_hours[1]):
+                        return True
+        return False
 
-                    term["meetings"][activity_type] = filtered
-            course["terms"] = all_terms
-
-        # Combine items with same time and course
-        for course in self.courses:
-            code = course["code"]
-            for term in course["terms"]:
-                for activity_type in term["meetings"]:
-                    meetings = term["meetings"][activity_type]
-                    combined: List[Meeting] = []
-                    while len(meetings):
-                        same_time = [meetings.pop()]
-                        for i in range(len(meetings) - 1, -1, -1):
-                            curr = meetings[i]
-                            if curr["times"] == same_time[0]["times"]:
-                                same_time.append(curr)
-                                meetings.pop(i)
-                        combined.append({
-                            "instructors": "/".join([m["instructors"] for m in same_time]),
-                            "space": "/".join([m["space"] for m in same_time]),
-                            "waitlist": "/".join([m["waitlist"] for m in same_time]),
-                            "notes": "/".join([m["notes"] for m in same_time]),
-                            "times": same_time[0]["times"],
-                            "activity_type": activity_type,
-                            "activity_code": "/".join([m["activity_code"] for m in same_time])
-                        })
-
-                    term["meetings"][activity_type] = combined
+    def flatten_selection(self, selection: Selection) -> List[FlattenedSelection]:
+        ans: List[FlattenedSelection] = []
+        for meeting in selection.meetings:
+            for t in meeting.times:
+                ans.append(
+                    FlattenedSelection(selection.code, selection.term,
+                                       meeting.instructors, meeting.space, meeting.waitlist, meeting.notes,
+                                       meeting.activity_type + meeting.activity_code, t.working_hours, t.is_sync))
+        return ans
 
     def all_timetables(self, past: List[Selection] = [], ans: List[List[Selection]] = [], index=0) -> List[List[Selection]]:
         if index == len(self.courses):
@@ -116,261 +160,84 @@ class Timetable:
                 past.pop()
         return ans
 
-    def add_to_timetable(self, selection: Selection):
-        term = selection["term"]
-        for meeting in selection["meetings"]:
-            for time in meeting["times"]:
-                start, end = self.time_to_index(time)
-                if start == -1:
+    def get_combinations(self, so_far: List[Selection],
+                         remaining: List[List[Meeting]]) -> List[Selection]:
+        if len(remaining) == 0:
+            return so_far
+        new_so_far = []
+        for item in so_far:
+            for other in remaining[0]:
+                if self.check_overlap_with_selection(item, other):
                     continue
-                for i in range(start, end):
-                    if ((term in "FY" and self.timetable_first[i] is not None)
-                            or (term in "SY" and self.timetable_second[i] is not None)):
-                        raise Exception(
-                            f"""Trying to add to timetable when slot is used:
-                            {json.dumps([selection, self.timetable_first, self.timetable_second])}""")
-                    if term in "FY":
-                        self.timetable_first[i] = selection
-                    if term in "SY":
-                        self.timetable_second[i] = selection
-
-    def remove_from_timetable(self, selection: Selection):
-        term = selection["term"]
-        for meeting in selection["meetings"]:
-            for time in meeting["times"]:
-                start, end = self.time_to_index(time)
-                if start == -1:
-                    continue
-                for i in range(start, end):
-                    if ((term in "FY" and self.timetable_first[i] is None)
-                            or (term in "SY" and self.timetable_second[i] is None)):
-                        raise Exception(
-                            f"""Trying to remove to timetable when slot isn't used:
-                            {json.dumps([selection, self.timetable_first, self.timetable_second])}""")
-                    if term in "FY":
-                        self.timetable_first[i] = None
-                    if term in "SY":
-                        self.timetable_second[i] = None
+                cpy = item.meetings[:]
+                cpy.append(other)
+                new_so_far.append(
+                    Selection(item.code, item.term, cpy))
+        return self.get_combinations(new_so_far, remaining[1:])
 
     def get_possible_selections(self, index: int) -> List[Selection]:
-        def get_combinations(so_far: List[Selection],
-                             remaining: List[List[Meeting]]) -> List[Selection]:
-            if len(remaining) == 0:
-                return so_far
-            new_so_far = []
-            for item in so_far:
-                for other in remaining[0]:
-                    if self.check_overlap_with_selection(item, other):
-                        continue
-                    ori = {
-                        "code": item["code"],
-                        "term": item["term"],
-                        "meetings": item["meetings"][:]
-                    }
-                    ori["meetings"].append(other)
-                    new_so_far.append(ori)
-
-            return get_combinations(new_so_far, remaining[1:])
-
         curr_course = self.courses[index]
         ans: List[Selection] = []
-        for term in curr_course["terms"]:
+        for term in curr_course.terms:
             all_activities: List[List[Meeting]] = []
-            for activity_type in term["meetings"]:
+            for activity_type in term.meetings:
                 curr_activity_meetings: List[Meeting] = []
-                for meeting in term["meetings"][activity_type]:
-                    if not self.check_overlap(term["term"], meeting):
+                for meeting in term.meetings[activity_type]:
+                    if not self.check_overlap(term.term, meeting):
                         curr_activity_meetings.append(meeting)
                 all_activities.append(curr_activity_meetings)
             if len(all_activities) > 0:
-                ans += get_combinations([{
-                    "code": curr_course["code"],
-                    "term": term["term"],
-                    "meetings": [item]}
-                    for item in all_activities[0]], all_activities[1:])
-        return ans
-
-    def check_overlap_with_selection(self, prev: Selection, new_meeting: Meeting) -> bool:
-        for meeting in prev["meetings"]:
-            for time1 in meeting["times"]:
-                if time1["start"] == "None":  # Async timetable case
-                    continue
-                start1 = time.fromisoformat(time1["start"])
-                end1 = time.fromisoformat(time1["end"])
-                day1 = time1["day_of_week"].lower()
-                for time2 in new_meeting["times"]:
-                    if time2["start"] == "None":  # Async timetable case
-                        continue
-                    start2 = time.fromisoformat(time2["start"])
-                    end2 = time.fromisoformat(time2["end"])
-                    day2 = time2["day_of_week"].lower()
-                    if day1 == day2 and start1 < end2 and end1 > start2:
-                        return True
-        return False
-
-    def time_to_index(self, time: Time) -> int:
-        if time["start"] == "None":  # Async timetable case
-            return -1, -1
-        index = 0
-        day = time["day_of_week"].lower()
-        if day == "monday":
-            index += 0
-        elif day == "tuesday":
-            index += 48
-        elif day == "wednesday":
-            index += 96
-        elif day == "thursday":
-            index += 144
-        elif day == "friday":
-            index += 192
-        else:
-            raise Exception(f"Could not find day of week: {time}")
-        start_hour, start_minute = time["start"].split(":")
-        end_hour, end_minute = time["end"].split(":")
-        start = index + int(start_hour) * 2 + (start_minute == "30")
-        end = index + int(end_hour) * 2 + (end_minute == "30")
-        return start, end
-
-    def check_overlap(self, term: str, meeting: Meeting) -> bool:
-        time_periods: List[int] = []
-        for time in meeting["times"]:
-            start, end = self.time_to_index(time)
-            if start == -1:  # Async timetable case
-                return False
-            for i in range(start, end):
-                if ((term in "FY" and self.timetable_first[i] is not None)
-                        or (term in "SY" and self.timetable_second[i] is not None)):
-                    return True
-        return False
-
-    def flatten_selection(self, selection: Selection) -> List[FlattenedSelection]:
-        ans = []
-        for meeting in selection["meetings"]:
-            for t in meeting["times"]:
-                ans.append({
-                    "code": selection["code"],
-                    "term": selection["term"],
-                    "instructors": [item.strip() for item in meeting["instructors"].split("\n")],
-                    "space": meeting["space"],
-                    "waitlist": meeting["waitlist"],
-                    "notes": meeting["notes"],
-                    "day_of_week": t["day_of_week"],
-                    "start": t["start"],
-                    "end": t["end"],
-                    "activity": meeting["activity_type"] + meeting["activity_code"]
-                })
+                ans += self.get_combinations([
+                    Selection(curr_course.code, term.term, [m])
+                    for m in all_activities[0]], all_activities[1:])
         return ans
 
     def display_nicely(self, selections: List[FlattenedSelection]) -> str:
         ans = []
         first = sorted(
-            filter(lambda x: x["term"] in "FY", selections), key=self.sort_selection_comparator)
+            filter(lambda x: x.term in "FY", selections), key=self.sort_selection_comparator)
         second = sorted(
-            filter(lambda x: x["term"] in "SY", selections), key=self.sort_selection_comparator)
+            filter(lambda x: x.term in "SY", selections), key=self.sort_selection_comparator)
         ans.append(
             "————————————————————————————————————————————— First Term —————————————————————————————————————————————")
         for s in first:
-            ans.append(
-                f"{s['code']}-{s['term']} {s['activity']} on {s['day_of_week']}, {s['start']} to {s['end']}")
+            ans.append(str(s))
         ans.append(
             "————————————————————————————————————————————— Second Term —————————————————————————————————————————————")
         for s in second:
-            ans.append(
-                f"{s['code']}-{s['term']} {s['activity']} on {s['day_of_week']}, {s['start']} to {s['end']}")
+            ans.append(str(s))
         ans.append("—————————————————————————————————————————————")
         return "\n".join(ans)
 
     def get_time(self, selections: List[FlattenedSelection]) -> int:
+        # Assume selections is sorted by time
         total_time = 0
         visited_weekdays = set()
         for item in selections:
-            visited_weekdays.add(item["day_of_week"])
-        days = ["monday",
-                "tuesday",
-                "wednesday",
-                "thursday",
-                "friday"]
-        for item in visited_weekdays:
-            if item.lower() in days:
-                total_time += self.constraint["commute_time"]
+            if not item.is_sync:
+                visited_weekdays.add(item.working_hours[0])
+        total_time += self.constraint.commute_time * len(visited_weekdays)
+
         for i in range(len(selections) - 1):
             item = selections[i]
             item_after = selections[i+1]
-            day = item["day_of_week"].lower()
-            day_after = item_after["day_of_week"].lower()
-            if day not in days:
+            if not item.is_sync:
                 break
-            elif day == day_after:
-                hour1, minute1 = item_after["start"].split(":")
-                hour2, minute2 = item["end"].split(":")
-                total_time += ((int(hour1) * 60 + int(minute1)) -
-                               (int(hour2) * 60 + int(minute2)))
+            elif item.working_hours[0] == item_after.working_hours[0]:
+                total_time += ((item_after.working_hours[1].hour * 60 +
+                                item_after.working_hours[2].minute) -
+                               (item.working_hours[1].hour * 60 +
+                                item.working_hours[2].minute))
         return total_time
 
-    def sort_selection_comparator(self, s: Selection):
-        weekday_to_int = {
-            "monday": 0,
-            "tuesday": 1,
-            "wednesday": 2,
-            "thursday": 3,
-            "friday": 4
-        }
-        if s["start"] == "None":
+    def sort_selection_comparator(self, s: FlattenedSelection):
+        if not s.is_sync:
             return (100, 100)
-        day = weekday_to_int[s["day_of_week"].lower()]
-        start = time.fromisoformat(s["start"])
-        end = time.fromisoformat(s["end"])
-        return (day, start)
+        return (s.working_hours[0], s.working_hours[1])
 
     def sort_by_wasted_time(self, items: List[List[FlattenedSelection]]) -> List[List[FlattenedSelection]]:
         def comparator(selections: List[FlattenedSelection]):
             return self.get_time(sorted(
-                filter(lambda x: x["term"] in "FY", selections), key=self.sort_selection_comparator)) + self.get_time(sorted(
-                    filter(lambda x: x["term"] in "SY", selections), key=self.sort_selection_comparator))
+                filter(lambda x: x.term in "FY", selections), key=self.sort_selection_comparator)) + self.get_time(sorted(
+                    filter(lambda x: x.term in "SY", selections), key=self.sort_selection_comparator))
         return sorted(items, key=comparator)
-
-
-table = Timetable()
-timetables = table.all_timetables()
-flattened = []
-for list_of_selections in timetables:
-    total = []
-    for selection in list_of_selections:
-        for item in table.flatten_selection(selection):
-            total.append(item)
-    flattened.append(total)
-filtered = table.sort_by_wasted_time(flattened)
-times = {}
-smallest = 100000
-for selections in filtered:
-    total = table.get_time(sorted(
-        filter(lambda x: x["term"] in "FY", selections), key=table.sort_selection_comparator)) + table.get_time(sorted(
-            filter(lambda x: x["term"] in "SY", selections), key=table.sort_selection_comparator))
-    if total not in times:
-        times[total] = []
-    times[total].append(selections)
-    if total < smallest:
-        smallest = total
-if len(filtered) == 0:
-    print("No possible timetable can be generated with current constraints and courses")
-else:
-    curr = 1
-    print(
-        f"Currently displaying: {curr}/{len(times[smallest])} with {smallest/60} hours wasted per week (both terms)")
-    print(table.display_nicely(times[smallest][0]))
-    item = input("Enter to go forward, 1 to exit, 0 to go back\n")
-    print("\n\n\n")
-    while True:
-        if item == "0":
-            if curr > 1:
-                curr -= 1
-        else:
-            if curr < len(times[smallest]):
-                curr += 1
-        print(
-            f"Currently displaying: {curr}/{len(times[smallest])} with {smallest/60} hours wasted per week (both terms)")
-        print(table.display_nicely(times[smallest][curr - 1]))
-        item = input("Enter to go forward, 1 to exit, 0 to go back\n")
-        if item == "1":
-            break
-        print("\n\n\n")
