@@ -216,6 +216,7 @@ class Timetable:
         for item in selections:
             if not item.is_sync:
                 visited_weekdays.add(item.working_hours[0])
+        print("test")
         total_time += self.constraint.commute_time * len(visited_weekdays)
 
         for i in range(len(selections) - 1):
