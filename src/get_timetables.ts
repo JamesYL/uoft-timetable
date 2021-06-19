@@ -88,8 +88,8 @@ const getPossibleSelections = (
   return allPossible;
 };
 const isValidSelection = (selection: Selection): boolean => {
-  for (let i = 0; i < selection.length - 1; i++) {
-    for (let j = i + 1; i < selection.length; j++) {
+  for (let i = 0; i < selection.length; i++) {
+    for (let j = i + 1; j < selection.length; j++) {
       if (isSimplifiedMeetingOverlap(selection[i], selection[j])) return false;
     }
   }
@@ -101,7 +101,6 @@ const isSimplifiedMeetingOverlap = (
 ): boolean => {
   for (const time1 of meeting1.times) {
     if (time1.instructions) continue;
-
     for (const time2 of meeting2.times) {
       if (time2.instructions || time1.dayOfWeek != time2.dayOfWeek) continue;
       if (

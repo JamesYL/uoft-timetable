@@ -72,9 +72,9 @@ The program automatically combines sections that have the same type and same tim
 
 By adding more constraints, the "time wasted" increases since the program is designed to find a timetable that minimizes commute time and time spent between classes.
 
-If the program takes too long to load, you will be forced to add more constraints since that reduces the number of possibilities to consider (The algorithm is unefficient and the code is made of spaghetti).
+If the program takes too long to load, you will be forced to add more constraints since that reduces the number of possibilities to consider
 
 ## Requirements
 
-- Python 3.8
-- Chrome
+- [Node](https://nodejs.org/en/download/)
+- Chrome (Other browsers not tested)
