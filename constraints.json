@@ -2,10 +2,11 @@
   "smallest_start_time": "09:00",
   "biggest_end_time": "21:00",
   "course_constraint": {
-    "BIO130": {
-      "term": "S",
-      "exclude": []
+    "ANT100": {
+      "term": "Y",
+      "exclude": ["LEC5109", "LEC0202"]
     }
   },
-  "commute_time": 120
+  "commute_time": 120,
+  "print_amount": 5
 }

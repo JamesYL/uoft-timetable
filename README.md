@@ -10,7 +10,7 @@ Easily find a timetable that minimizes wasted time (commute time and time betwee
 2. Delete all files in `./courses` directory.
 3. Go to ArtSci's [timetable](https://timetable.iit.artsci.utoronto.ca/) with Chrome.
 4. Enter in a course code and search for courses. The course code should be exact like `MAT137`, **NOT** `MAT` and **NOT** `MAT137H1-F`. **Don't** add any other filters either.
-5. Open console by pressing `F12` and copy paste the code in `courses.js` into console. If Chrome asks you for permission for downloading, accept it.
+5. Open console by pressing `F12` and copy paste the code in `courses.js` into console. If Chrome asks you for permission for downloading, accept it. This script only works for ArtSci's timetable.
 6. You should see a `{course-code}.json` file downloaded such as `MAT137.json`.
 7. Repeat steps 4 - 6 for all the courses that you want.
 8. Drag all the `.json` files into `./courses` in the project directory. Make sure there aren't any duplicates or any unwanted courses.
@@ -37,7 +37,8 @@ Constraints fix issues by reducing the number of possible timetables. For exampl
       "exclude": []
     }
   },
-  "commute_time": 120
+  "commute_time": 120,
+  "print_amount": 5
 }
 ```
 
@@ -50,6 +51,8 @@ Constraints fix issues by reducing the number of possible timetables. For exampl
 **`course_constraint`**: Each key must be a valid course code mentioned in step 4 of [How to Start](#how-to-start). The key must refer to an object with properties found [here](#constraints-for-courses). This key is **optional**! If there are no constraints a course, do not have the key for it.
 
 **`commute_time`**: Commute time in minutes for both ways
+
+**`print_amount`**: Maximum number of timetables displayed
 
 ### Constraints for Courses
 

@@ -7,14 +7,27 @@ for (const course of document.querySelectorAll(".perCourse")) {
     const days = [];
     for (const day of meeting.querySelectorAll(".colTime .colDay")) {
       const times = {};
-      times.day_of_week = day.querySelector(".weekDay").innerText;
       const startAndEndTimes = day.querySelectorAll("time");
+      times.instructions = "";
+      times.start = 0;
+      times.end = 0;
+      times.dayOfWeek = 5;
       if (startAndEndTimes.length == 0) {
-        times.start = null;
-        times.end = null;
+        times.instructions = day.querySelector(".weekDay").innerText;
       } else {
-        times.start = startAndEndTimes[0].innerText;
-        times.end = startAndEndTimes[1].innerText;
+        [startHour, startMin] = startAndEndTimes[0].innerText.split(":");
+        [endHour, endMin] = startAndEndTimes[1].innerText.split(":");
+        dayToInt = {
+          monday: 1,
+          tuesday: 2,
+          wednesday: 3,
+          thursday: 4,
+          friday: 5,
+        };
+        times.dayOfWeek =
+          dayToInt[day.querySelector(".weekDay").innerText.toLowerCase()];
+        times.start = parseInt(startHour) * 60 + parseInt(startMin);
+        times.end = parseInt(endHour) * 60 + parseInt(endMin);
       }
       days.push(times);
     }
@@ -27,16 +40,16 @@ for (const course of document.querySelectorAll(".perCourse")) {
         .split("\n")
         .map((item) => item.trim());
     }
-    currMeeting.space = meeting.querySelector(".colAvail").innerText;
-    currMeeting.waitlist = meeting.querySelector(".colWait").innerText;
-    currMeeting.notes = meeting.querySelector(".colNotes").innerText;
+    currMeeting.space = meeting.querySelector(".colAvail").innerText.trim();
+    currMeeting.waitlist = meeting.querySelector(".colWait").innerText.trim();
+    currMeeting.notes = meeting.querySelector(".colNotes").innerText.trim();
     currMeeting.times = days;
-    currMeeting.activity_type = activity.substring(0, 3);
-    currMeeting.activity_code = activity.substring(3);
-    if (!(currMeeting.activity_type in meetings)) {
-      meetings[currMeeting.activity_type] = [];
+    currMeeting.activityType = activity.substring(0, 3);
+    currMeeting.activityCode = activity.substring(3);
+    if (!(currMeeting.activityType in meetings)) {
+      meetings[currMeeting.activityType] = [];
     }
-    meetings[currMeeting.activity_type].push(currMeeting);
+    meetings[currMeeting.activityType].push(currMeeting);
   }
   const code = courseTitle.substring(0, 6);
   const term = courseTitle.charAt(courseTitle.length - 1);

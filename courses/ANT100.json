@@ -1,1 +1,36 @@
-{"code":"ANT100","terms":[{"term":"Y","meetings":{"LEC":[{"instructors":["Kalmar, I.","Lehman, S.","Patton, K."],"space":"33 of 50 available","waitlist":"Yes: 0 student","notes":"Online - Synchronous (See Delivery Instructions.)\n","times":[{"day_of_week":"Thursday","start":"18:00","end":"20:00"}],"activity_type":"LEC","activity_code":"2501"},{"instructors":["Kalmar, I.","Lehman, S.","Patton, K."],"space":"207 of 1030 available","waitlist":"Yes: 0 student","notes":"Online - Synchronous (See Delivery Instructions.)\n","times":[{"day_of_week":"Thursday","start":"18:00","end":"20:00"}],"activity_type":"LEC","activity_code":"5101"}]}}]}
+{
+  "code": "ANT100",
+  "terms": [
+    {
+      "term": "Y",
+      "meetings": {
+        "LEC": [
+          {
+            "instructors": ["Kalmar, I.", "Lehman, S.", "Patton, K."],
+            "space": "33 of 50 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "Online - Synchronous (See Delivery Instructions.)",
+            "times": [
+              { "instructions": "", "start": 1080, "end": 1200, "dayOfWeek": 4 },
+              { "instructions": "", "start": 1080, "end": 1200, "dayOfWeek": 5 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "2501"
+          },
+          {
+            "instructors": ["Kalmar, I.", "Lehman, S.", "Patton, K."],
+            "space": "207 of 1030 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "Online - Synchronous (See Delivery Instructions.)",
+            "times": [
+              { "instructions": "", "start": 1080, "end": 1200, "dayOfWeek": 3 },
+              { "instructions": "", "start": 1080, "end": 1200, "dayOfWeek": 4 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "5101"
+          }
+        ]
+      }
+    }
+  ]
+}
