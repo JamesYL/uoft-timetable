@@ -1,6 +1,7 @@
 import { FlattenedMeeting } from "./get_timetables";
+import fs from "fs";
 /**
- * Displaying the minimal timetables in console
+ * Displaying the minimal timetables in output file
  * @param meetings The timetables
  * @param minutesWasted Commute time used
  * @param maxPrint Max timetables displayed
@@ -8,20 +9,25 @@ import { FlattenedMeeting } from "./get_timetables";
 export const displayMeetings = (
   meetings: FlattenedMeeting[][],
   minutesWasted: number,
-  maxPrint: number
+  maxPrint: number,
+  outputLoc = "./output.txt"
 ): void => {
   if (meetings.length === 0)
-    console.log(
+    fs.writeFileSync(
+      outputLoc,
       "No possible timetable can be generated with current constraints and courses"
     );
   else {
-    console.log(
+    const outputStrs: string[] = [];
+    outputStrs.push(
       `Total of ${meetings.length} timetable(s) with minimal wasted time generated.`
     );
-    console.log(`${minutesWasted / 60} hours wasted per week (both terms).`);
-    for (let i = 0; i < Math.min(meetings.length, maxPrint); i++) {
-      console.log(displayTimetable(meetings[i]));
-    }
+    outputStrs.push(
+      `${minutesWasted / 60} hours wasted per week (both terms).`
+    );
+    for (let i = 0; i < Math.min(meetings.length, maxPrint); i++)
+      outputStrs.push(displayTimetable(meetings[i]));
+    fs.writeFileSync(outputLoc, outputStrs.join("\n"));
   }
 };
 

@@ -16,7 +16,7 @@ Easily find a timetable that minimizes wasted time (commute time and time betwee
 8. Repeat steps 5 - 7 for all the courses that you want.
 9. Drag all the `.json` files into `./courses` in the project directory. Make sure there aren't any duplicates or any unwanted courses.
 10. Setup your constraints, instructions [here](#constraints).
-11. Run the command `npm start` with the project directory as the working directory. You should see output on screen telling you useful information.
+11. Run the command `npm start` with the project directory as the working directory. Look at `./output.txt` for generated timetables.
 
 If after step 10 and no output at all is showing up, it's probably because it is calculating too many possibilities (this can be something like 100<sup>10</sup> possibilities). To prevent this issue, make better [constraints](#constraints). Similarly, if there are too many outputs, make better [constraints](#constraints).
 
