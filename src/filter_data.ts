@@ -6,6 +6,12 @@ import {
   Meeting,
   Term,
 } from "./get_data";
+/**
+ * Remove courses that don't comply with the constraints set
+ * @param courses The courses
+ * @param constraint The constraints
+ * @returns Filtered courses
+ */
 export const filterData = (
   courses: Course[],
   constraint: FilteredConstraint
@@ -42,7 +48,10 @@ const filterMeetingsByExclusions = (term: Term, exclude: UpdatedExclude) => {
     const meetings = term.meetings[activityType];
     term.meetings[activityType] = meetings.filter((meeting) => {
       for (const item of exclude) {
-        if (meeting.activityType === item[0] && meeting.activityCode === item[1])
+        if (
+          meeting.activityType === item[0] &&
+          meeting.activityCode === item[1]
+        )
           return false;
       }
       return true;

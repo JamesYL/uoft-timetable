@@ -26,6 +26,11 @@ export interface SimplifiedTerm {
 export interface SimplifiedMeetingsByActivityType {
   [activityType: string]: SimplifiedMeeting[];
 }
+/**
+ * Combining activities in courses that have the same times
+ * @param courses All courses
+ * @returns Courses but activities with same times are combined
+ */
 export const simplifyCourses = (courses: Course[]): SimplifiedCourse[] =>
   courses.map((item) => simplifyCourse(item));
 

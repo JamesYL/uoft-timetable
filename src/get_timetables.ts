@@ -19,7 +19,10 @@ export interface FlattenedMeeting {
   instructions: string;
   meetings: Meeting[];
 }
-
+/**
+ * @param courses All courses
+ * @returns All possible valid timetables
+ */
 export const getAllTimetables = (
   courses: SimplifiedCourse[]
 ): FlattenedMeeting[][] => {
@@ -40,7 +43,7 @@ export const getAllTimetablesHelper = (
     const curr = getPossibleSelections(timetable, courses[index]);
     for (const selection of curr) {
       for (const meeting of selection) {
-        for (const time of meeting.times) {
+        meeting.times.forEach((time) =>
           past.push({
             activityType: meeting.activityType,
             term: meeting.term,
@@ -50,13 +53,13 @@ export const getAllTimetablesHelper = (
             end: time.end,
             instructions: time.instructions,
             meetings: meeting.meetings,
-          });
-        }
+          })
+        );
         addToTimetable(timetable, meeting);
       }
       getAllTimetablesHelper(past, ans, courses, timetable, index + 1);
       for (const meeting of selection) {
-        past.pop();
+        meeting.times.forEach(() => past.pop());
         removeFromTimetable(timetable, meeting);
       }
     }
@@ -81,6 +84,7 @@ const getPossibleSelections = (
       .filter(isValidSelection)
       .forEach((s) => allPossible.push(s));
   }
+
   return allPossible;
 };
 const isValidSelection = (selection: Selection): boolean => {

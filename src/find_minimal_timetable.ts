@@ -1,4 +1,10 @@
 import { FlattenedMeeting } from "./get_timetables";
+/**
+ * Find timetables that minimze commute time and time wasted between classes
+ * @param commute Commute time both ways
+ * @param allMeetings Timetables being computed
+ * @returns The minimal timetables
+ */
 export const findMinimalTimetable = (
   commute: number,
   allMeetings: FlattenedMeeting[][]
