@@ -5,7 +5,7 @@ import {
   createEmptyTimetable,
   FullTimetable,
   removeFromTimetable,
-} from "../timetable";
+} from "./timetable";
 import { ActivityType, CourseCode, Meeting, TermType } from "./get_data";
 
 type Selection = SimplifiedMeeting[];

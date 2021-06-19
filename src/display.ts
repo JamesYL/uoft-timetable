@@ -1,9 +1,9 @@
 import { FlattenedMeeting } from "./get_timetables";
-export const displayMeetings = async (
+export const displayMeetings = (
   meetings: FlattenedMeeting[][],
   minutesWasted: number,
   maxPrint: number
-) => {
+): void => {
   if (meetings.length === 0)
     console.log(
       "No possible timetable can be generated with current constraints and courses"

@@ -61,7 +61,9 @@ import path from "path";
 const CONSTRAINTS_FILE_LOC = "./constraints.json";
 const COURSES_DIR_LOC = "./courses";
 
-export const getConstraint = (constraintsFile = CONSTRAINTS_FILE_LOC) => {
+export const getConstraint = (
+  constraintsFile = CONSTRAINTS_FILE_LOC
+): FilteredConstraint => {
   const constraints: Constraint = JSON.parse(
     fs.readFileSync(constraintsFile, "utf8")
   );
@@ -90,7 +92,7 @@ export const getConstraint = (constraintsFile = CONSTRAINTS_FILE_LOC) => {
   };
   return filteredConstraints;
 };
-export const getCourses = (coursesDir = COURSES_DIR_LOC) => {
+export const getCourses = (coursesDir = COURSES_DIR_LOC): Course[] => {
   const courses: Course[] = fs
     .readdirSync(coursesDir)
     .map((file) =>

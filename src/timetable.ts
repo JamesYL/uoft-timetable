@@ -1,5 +1,5 @@
-import { Time } from "./src/get_data";
-import { SimplifiedMeeting } from "./src/simplify_data";
+import { Time } from "./get_data";
+import { SimplifiedMeeting } from "./simplify_data";
 type timetable = (SimplifiedMeeting | null)[];
 export interface FullTimetable {
   first: timetable;
@@ -23,7 +23,7 @@ export const createEmptyTimetable = (): FullTimetable => {
 export const addToTimetable = (
   timetable: FullTimetable,
   simplifiedMeeting: SimplifiedMeeting
-) => {
+): void => {
   for (const time of simplifiedMeeting.times) {
     const [startI, endI] = timeToIndex(time);
     for (let i = startI; i < endI; i++) {
@@ -45,12 +45,13 @@ export const addToTimetable = (
 export const removeFromTimetable = (
   timetable: FullTimetable,
   simplifiedMeeting: SimplifiedMeeting
-) => {
+): void => {
   for (const time of simplifiedMeeting.times) {
     const [startI, endI] = timeToIndex(time);
     for (let i = startI; i < endI; i++) {
       if (
-        ("FY".includes(simplifiedMeeting.term) && timetable.first[i] === null) ||
+        ("FY".includes(simplifiedMeeting.term) &&
+          timetable.first[i] === null) ||
         ("SY".includes(simplifiedMeeting.term) && timetable.second[i] === null)
       ) {
         throw new Error(
@@ -65,7 +66,7 @@ export const removeFromTimetable = (
 export const checkOverlap = (
   timetable: FullTimetable,
   meeting: SimplifiedMeeting
-) => {
+): boolean => {
   for (const time of meeting.times) {
     const [start, end] = timeToIndex(time);
     for (let i = start; i < end; i++) {
