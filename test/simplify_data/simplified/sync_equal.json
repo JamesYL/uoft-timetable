@@ -1,0 +1,59 @@
+{
+  "code": "sync_equal",
+  "terms": [
+    {
+      "term": "F",
+      "meetings": {
+        "TUT": [
+          {
+            "activityType": "TUT",
+            "term": "F",
+            "code": "sync_equal",
+            "times": [
+              {
+                "instructions": "",
+                "start": 60,
+                "end": 120,
+                "dayOfWeek": 1
+              }
+            ],
+            "meetings": [
+              {
+                "instructors": [],
+                "space": "",
+                "waitlist": "",
+                "notes": "",
+                "times": [
+                  {
+                    "instructions": "",
+                    "start": 60,
+                    "end": 120,
+                    "dayOfWeek": 1
+                  }
+                ],
+                "activityType": "TUT",
+                "activityCode": "0402"
+              },
+              {
+                "instructors": [],
+                "space": "",
+                "waitlist": "",
+                "notes": "",
+                "times": [
+                  {
+                    "instructions": "",
+                    "start": 60,
+                    "end": 120,
+                    "dayOfWeek": 1
+                  }
+                ],
+                "activityType": "TUT",
+                "activityCode": "0401"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

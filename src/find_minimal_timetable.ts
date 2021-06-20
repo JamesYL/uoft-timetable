@@ -29,7 +29,13 @@ const getCommuteTime = (
   const firstTerm = meetings.filter((meeting) => "FY".includes(meeting.term));
   const secondTerm = meetings.filter((meeting) => "SY".includes(meeting.term));
   const comparator = (a: FlattenedMeeting, b: FlattenedMeeting) => {
-    if (a.instructions) return 1;
+    if (a.instructions && b.instructions) {
+      if (a.dayOfWeek < b.dayOfWeek) return -1;
+      else if (b.dayOfWeek < a.dayOfWeek) return 1;
+      else if (a.start < b.start) return -1;
+      return 1;
+    }
+    else if (a.instructions) return 1;
     else if (b.instructions) return -1;
     else if (a.dayOfWeek < b.dayOfWeek) return -1;
     else if (a.dayOfWeek > b.dayOfWeek) return 1;

@@ -1,0 +1,44 @@
+{
+  "code": "sync_diff_day",
+  "terms": [
+    {
+      "term": "F",
+      "meetings": {
+        "TUT": [
+          {
+            "instructors": [],
+            "space": "",
+            "waitlist": "",
+            "notes": "",
+            "times": [
+              {
+                "instructions": "",
+                "start": 60,
+                "end": 120,
+                "dayOfWeek": 1
+              }
+            ],
+            "activityType": "TUT",
+            "activityCode": "0401"
+          },
+          {
+            "instructors": [],
+            "space": "",
+            "waitlist": "",
+            "notes": "",
+            "times": [
+              {
+                "instructions": "",
+                "start": 60,
+                "end": 120,
+                "dayOfWeek": 2
+              }
+            ],
+            "activityType": "TUT",
+            "activityCode": "0402"
+          }
+        ]
+      }
+    }
+  ]
+}
