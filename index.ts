@@ -4,8 +4,8 @@ import { filterData } from "./src/filter_data";
 import { simplifyCourses } from "./src/simplify_data";
 import { findMinimalTimetable } from "./src/find_minimal_timetable";
 import { displayMeetings } from "./src/display";
-const constraint = getConstraint();
-const courses = filterData(getCourses(), constraint);
+const constraint = getConstraint("./constraints.json");
+const courses = filterData(getCourses("./courses"), constraint);
 const simplifiedCourses = simplifyCourses(courses);
 const allTimetables = getAllTimetables(simplifiedCourses);
 const [minimalTimetables, minutesWasted] = findMinimalTimetable(

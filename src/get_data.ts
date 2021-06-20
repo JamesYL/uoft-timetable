@@ -58,17 +58,13 @@ export interface FilteredCourseConstraint {
 
 import * as fs from "fs";
 import path from "path";
-const CONSTRAINTS_FILE_LOC = "./constraints.json";
-const COURSES_DIR_LOC = "./courses";
 
 /**
  * Get constraints
  * @param constraintsFile Location for constraints json file
  * @returns constraints
  */
-export const getConstraint = (
-  constraintsFile = CONSTRAINTS_FILE_LOC
-): FilteredConstraint => {
+export const getConstraint = (constraintsFile: string): FilteredConstraint => {
   const constraints: Constraint = JSON.parse(
     fs.readFileSync(constraintsFile, "utf8")
   );
@@ -102,7 +98,7 @@ export const getConstraint = (
  * @param coursesDir Directory containing json files
  * @returns All courses
  */
-export const getCourses = (coursesDir = COURSES_DIR_LOC): Course[] => {
+export const getCourses = (coursesDir: string): Course[] => {
   const courses: Course[] = fs
     .readdirSync(coursesDir)
     .map((file) =>

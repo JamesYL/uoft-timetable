@@ -33,7 +33,22 @@
                 ],
                 "activityType": "TUT",
                 "activityCode": "0401"
-              },
+              }
+            ]
+          },
+          {
+            "activityType": "TUT",
+            "term": "F",
+            "code": "async_sync",
+            "times": [
+              {
+                "instructions": "Async",
+                "start": 60,
+                "end": 120,
+                "dayOfWeek": 1
+              }
+            ],
+            "meetings": [
               {
                 "instructors": [],
                 "space": "",

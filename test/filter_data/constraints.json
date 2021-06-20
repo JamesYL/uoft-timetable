@@ -2,16 +2,16 @@
   "smallest_start_time": "09:00",
   "biggest_end_time": "21:00",
   "course_constraint": {
-    "CSC209": {
+    "excluding_course": {
       "term": "F",
       "exclude": ["TUT0401"]
     },
-    "MAT137": {
+    "duplicate_term": {
       "term": "S",
-      "exclude": ["LEC5104", "LEC1002"]
+      "exclude": []
     },
-    "CSC148": {
-      "term": "S",
+    "exclude_all_terms": {
+      "term": "F",
       "exclude": []
     }
   },

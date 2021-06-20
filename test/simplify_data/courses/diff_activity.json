@@ -1,0 +1,46 @@
+{
+  "code": "diff_activity",
+  "terms": [
+    {
+      "term": "F",
+      "meetings": {
+        "TUT": [
+          {
+            "instructors": [],
+            "space": "",
+            "waitlist": "",
+            "notes": "",
+            "times": [
+              {
+                "instructions": "",
+                "start": 60,
+                "end": 120,
+                "dayOfWeek": 1
+              }
+            ],
+            "activityType": "TUT",
+            "activityCode": "0401"
+          }
+        ],
+        "LEC": [
+          {
+            "instructors": [],
+            "space": "",
+            "waitlist": "",
+            "notes": "",
+            "times": [
+              {
+                "instructions": "",
+                "start": 60,
+                "end": 120,
+                "dayOfWeek": 1
+              }
+            ],
+            "activityType": "LEC",
+            "activityCode": "0401"
+          }
+        ]
+      }
+    }
+  ]
+}

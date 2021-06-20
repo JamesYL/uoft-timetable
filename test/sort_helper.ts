@@ -43,6 +43,7 @@ const sortOneCourse = (course: SimplifiedCourse): void => {
         for (const meeting of simplifiedMeeting.meetings) {
           meeting.times.sort(timeComparator);
         }
+        console.log(simplifiedMeeting);
         simplifiedMeeting.meetings.sort(meetingComparator);
       }
       curr.sort(simplifiedMeetingComparator);

@@ -1,0 +1,32 @@
+{
+  "code": "excluding_by_time",
+  "terms": [
+    {
+      "term": "S",
+      "meetings": {
+        "TUT": [
+          {
+            "instructors": [],
+            "space": "17 of 156 available",
+            "waitlist": "No",
+            "notes": "",
+            "times": [
+              {
+                "instructions": "Asynchronous (See Delivery Instructions.)",
+                "start": 0,
+                "end": 0,
+                "dayOfWeek": 1
+              }
+            ],
+            "activityType": "TUT",
+            "activityCode": "0401"
+          }
+        ]
+      }
+    },
+    {
+      "term": "F",
+      "meetings": { "LEC": [], "TUT": [] }
+    }
+  ]
+}

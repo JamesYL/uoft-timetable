@@ -1,0 +1,24 @@
+{
+  "code": "excluding_course",
+  "terms": [
+    {
+      "term": "F",
+      "meetings": {
+        "LEC": [
+          {
+            "instructors": ["Reid, K."],
+            "space": "21 of 140 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "Online - Synchronous (See Delivery Instructions.)",
+            "times": [
+              { "instructions": "", "start": 1080, "end": 1200, "dayOfWeek": 2 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "5101"
+          }
+        ],
+        "TUT": []
+      }
+    }
+  ]
+}
