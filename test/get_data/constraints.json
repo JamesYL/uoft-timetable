@@ -1,0 +1,16 @@
+{
+  "smallest_start_time": "09:00",
+  "biggest_end_time": "21:00",
+  "course_constraint": {
+    "ANT100": {
+      "term": "Y",
+      "exclude": ["LEC5109", "LEC0202"]
+    },
+    "MAT137": {
+      "term": "S",
+      "exclude": ["LEC5104", "LEC1002"]
+    }
+  },
+  "commute_time": 120,
+  "print_amount": 5
+}

@@ -90,7 +90,7 @@ const simplifyMeetingsSameActivity = (
   return combined;
 };
 const sameTime = (time: Time[], otherTime: Time[]): boolean => {
-  if (time.length != otherTime.length) return false;
+  if (time.length !== otherTime.length) return false;
   const comparator = (a: Time, b: Time) => {
     if (a.instructions) return -1;
     else if (b.instructions) return 1;
@@ -111,9 +111,9 @@ const sameTime = (time: Time[], otherTime: Time[]): boolean => {
     if (
       !time[i].instructions &&
       !otherTime[i].instructions &&
-      (time[i].dayOfWeek != otherTime[i].dayOfWeek ||
-        time[i].start != otherTime[i].start ||
-        time[i].end != otherTime[i].end)
+      (time[i].dayOfWeek !== otherTime[i].dayOfWeek ||
+        time[i].start !== otherTime[i].start ||
+        time[i].end !== otherTime[i].end)
     )
       return false;
   }

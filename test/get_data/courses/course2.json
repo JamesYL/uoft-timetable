@@ -1,0 +1,64 @@
+{
+  "code": "CSC343",
+  "terms": [
+    {
+      "term": "S",
+      "meetings": {
+        "TUT": [
+          {
+            "instructors": [],
+            "space": "17 of 156 available",
+            "waitlist": "No",
+            "notes": "",
+            "times": [
+              {
+                "instructions": "Asynchronous (See Delivery Instructions.)",
+                "start": 0,
+                "end": 0,
+                "dayOfWeek": 1
+              }
+            ],
+            "activityType": "TUT",
+            "activityCode": "0401"
+          }
+        ]
+      }
+    },
+    {
+      "term": "F",
+      "meetings": {
+        "LEC": [
+          {
+            "instructors": ["Reid, K."],
+            "space": "21 of 140 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "Online - Synchronous (See Delivery Instructions.)",
+            "times": [
+              { "instructions": "", "start": 1080, "end": 1200, "dayOfWeek": 2 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "5101"
+          }
+        ],
+        "TUT": [
+          {
+            "instructors": [],
+            "space": "17 of 156 available",
+            "waitlist": "No",
+            "notes": "",
+            "times": [
+              {
+                "instructions": "Asynchronous (See Delivery Instructions.)",
+                "start": 0,
+                "end": 0,
+                "dayOfWeek": 1
+              }
+            ],
+            "activityType": "TUT",
+            "activityCode": "0401"
+          }
+        ]
+      }
+    }
+  ]
+}

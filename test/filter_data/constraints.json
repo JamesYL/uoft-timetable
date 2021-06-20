@@ -1,0 +1,20 @@
+{
+  "smallest_start_time": "09:00",
+  "biggest_end_time": "21:00",
+  "course_constraint": {
+    "CSC209": {
+      "term": "F",
+      "exclude": ["TUT0401"]
+    },
+    "MAT137": {
+      "term": "S",
+      "exclude": ["LEC5104", "LEC1002"]
+    },
+    "CSC148": {
+      "term": "S",
+      "exclude": []
+    }
+  },
+  "commute_time": 120,
+  "print_amount": 5
+}

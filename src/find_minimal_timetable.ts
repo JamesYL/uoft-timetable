@@ -55,8 +55,8 @@ const commuteTimeHelper = (
   for (let i = 0; i < meetings.length; i++) {
     if (meetings[i].instructions) return total;
     if (
-      i + 1 != meetings.length &&
-      meetings[i].dayOfWeek == meetings[i + 1].dayOfWeek
+      i + 1 !== meetings.length &&
+      meetings[i].dayOfWeek === meetings[i + 1].dayOfWeek
     ) {
       total += meetings[i + 1].start - meetings[i].end;
     }

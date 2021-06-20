@@ -102,7 +102,7 @@ const isSimplifiedMeetingOverlap = (
   for (const time1 of meeting1.times) {
     if (time1.instructions) continue;
     for (const time2 of meeting2.times) {
-      if (time2.instructions || time1.dayOfWeek != time2.dayOfWeek) continue;
+      if (time2.instructions || time1.dayOfWeek !== time2.dayOfWeek) continue;
       if (
         (time1.start >= time2.start && time1.start < time2.end) ||
         (time1.end > time2.start && time1.end <= time2.end)

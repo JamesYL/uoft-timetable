@@ -16,9 +16,9 @@ export interface MeetingsByActivityType {
 }
 export interface Meeting {
   instructors: string[];
-  space: string[];
-  waitlist: string[];
-  notes: string[];
+  space: string;
+  waitlist: string;
+  notes: string;
   times: Time[];
   activityCode: ActivityCode;
   activityType: ActivityType;
