@@ -22,23 +22,27 @@ export const findMinimalTimetable = (
   if (smallest === 1000000) return [[], smallest];
   return [commuteTimeToMeetings[smallest], smallest];
 };
+export const flattenedMeetingComparator = (
+  a: FlattenedMeeting,
+  b: FlattenedMeeting
+): number => {
+  if (a.instructions) return 1;
+  else if (b.instructions) return -1;
+  else if (a.dayOfWeek < b.dayOfWeek) return -1;
+  else if (a.dayOfWeek > b.dayOfWeek) return 1;
+  else if (a.start < b.start) return -1;
+  else if (a.start > b.start) return 1;
+  throw Error("Duplicate meeting at same time");
+};
 const getCommuteTime = (
   commute: number,
   meetings: FlattenedMeeting[]
 ): number => {
   const firstTerm = meetings.filter((meeting) => "FY".includes(meeting.term));
   const secondTerm = meetings.filter((meeting) => "SY".includes(meeting.term));
-  const comparator = (a: FlattenedMeeting, b: FlattenedMeeting) => {
-    if (a.instructions) return 1;
-    else if (b.instructions) return -1;
-    else if (a.dayOfWeek < b.dayOfWeek) return -1;
-    else if (a.dayOfWeek > b.dayOfWeek) return 1;
-    else if (a.start < b.start) return -1;
-    else if (a.start > b.start) return 1;
-    throw Error("Duplicate meeting at same time");
-  };
-  firstTerm.sort(comparator);
-  secondTerm.sort(comparator);
+
+  firstTerm.sort(flattenedMeetingComparator);
+  secondTerm.sort(flattenedMeetingComparator);
   return (
     commuteTimeHelper(commute, firstTerm) +
     commuteTimeHelper(commute, secondTerm)

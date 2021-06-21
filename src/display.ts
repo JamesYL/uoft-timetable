@@ -1,5 +1,6 @@
 import { FlattenedMeeting } from "./get_timetables";
 import fs from "fs";
+import { flattenedMeetingComparator } from "./find_minimal_timetable";
 /**
  * Displaying the minimal timetables in output file
  * @param meetings The timetables
@@ -33,6 +34,7 @@ export const displayMeetings = (
 };
 
 const displayTimetable = (meetings: FlattenedMeeting[]) => {
+  meetings.sort(flattenedMeetingComparator);
   const firstDivider = "—————————————————First Term—————————————————";
   const firstTerm = meetings
     .filter((meeting) => "FY".includes(meeting.term))
