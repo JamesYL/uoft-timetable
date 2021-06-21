@@ -13,6 +13,12 @@
             "times": [
               {
                 "instructions": "",
+                "start": 150,
+                "end": 180,
+                "dayOfWeek": 1
+              },
+              {
+                "instructions": "",
                 "start": 60,
                 "end": 120,
                 "dayOfWeek": 1
@@ -38,6 +44,12 @@
                 "instructions": "",
                 "start": 60,
                 "end": 120,
+                "dayOfWeek": 1
+              },
+              {
+                "instructions": "",
+                "start": 150,
+                "end": 180,
                 "dayOfWeek": 1
               }
             ],

@@ -15,6 +15,12 @@
                 "start": 60,
                 "end": 120,
                 "dayOfWeek": 1
+              },
+              {
+                "instructions": "",
+                "start": 60,
+                "end": 120,
+                "dayOfWeek": 2
               }
             ],
             "meetings": [
@@ -29,6 +35,12 @@
                     "start": 60,
                     "end": 120,
                     "dayOfWeek": 1
+                  },
+                  {
+                    "instructions": "",
+                    "start": 60,
+                    "end": 120,
+                    "dayOfWeek": 2
                   }
                 ],
                 "activityType": "TUT",
@@ -45,6 +57,12 @@
                     "start": 60,
                     "end": 120,
                     "dayOfWeek": 1
+                  },
+                  {
+                    "instructions": "",
+                    "start": 60,
+                    "end": 120,
+                    "dayOfWeek": 2
                   }
                 ],
                 "activityType": "TUT",

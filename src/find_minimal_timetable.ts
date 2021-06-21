@@ -37,7 +37,7 @@ const getCommuteTime = (
     else if (a.dayOfWeek > b.dayOfWeek) return 1;
     else if (a.start < b.start) return -1;
     else if (a.start > b.start) return 1;
-    return 0;
+    throw Error("Duplicate meeting at same time");
   };
   firstTerm.sort(comparator);
   secondTerm.sort(comparator);

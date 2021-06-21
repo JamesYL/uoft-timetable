@@ -84,4 +84,15 @@ describe("Find minimal timetable", () => {
   test("Empty case", () => {
     expect(findMinimalTimetable(40, [])[0]).toEqual([]);
   });
+  test("Duplicate meeting issue", () => {
+    expect(
+      () =>
+        findMinimalTimetable(40, [
+          [
+            generateFlattenedMeeting(1, 570, 690, "S"),
+            generateFlattenedMeeting(1, 570, 690, "S"),
+          ],
+        ])[0]
+    ).toThrow(/Duplicate meeting at same time/);
+  });
 });

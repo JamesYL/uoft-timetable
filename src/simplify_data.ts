@@ -89,21 +89,21 @@ const simplifyMeetingsSameActivity = (
   }
   return combined;
 };
+export const timeComparator = (a: Time, b: Time): number => {
+  if (a.instructions && b.instructions) return 0;
+  else if (a.instructions) return 1;
+  else if (b.instructions) return -1;
+  else if (a.dayOfWeek < b.dayOfWeek) return -1;
+  else if (b.dayOfWeek < a.dayOfWeek) return 1;
+  else if (a.start < b.start) return -1;
+  else if (a.start > b.start) return 1;
+  return 0;
+};
 const sameTime = (time: Time[], otherTime: Time[]): boolean => {
   if (time.length !== otherTime.length) return false;
-  const comparator = (a: Time, b: Time) => {
-    if (a.instructions && b.instructions) {
-      return 0;
-    } else if (a.instructions) return 1;
-    else if (b.instructions) return -1;
-    else if (a.dayOfWeek < b.dayOfWeek) return -1;
-    else if (b.dayOfWeek < a.dayOfWeek) return 1;
-    else if (a.start < b.start) return -1;
-    else if (a.start > b.start) return 1;
-    return 0;
-  };
-  time.sort(comparator);
-  otherTime.sort(comparator);
+
+  time.sort(timeComparator);
+  otherTime.sort(timeComparator);
   for (let i = 0; i < time.length; i++) {
     if (!!time[i].instructions && !!otherTime[i].instructions) return true;
     else if (!!time[i].instructions || !!otherTime[i].instructions)
