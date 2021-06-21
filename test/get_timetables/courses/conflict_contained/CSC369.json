@@ -1,0 +1,25 @@
+{
+  "code": "CSC369",
+  "terms": [
+    {
+      "term": "F",
+      "meetings": {
+        "LEC": [
+          {
+            "instructors": ["Reid, K."],
+            "space": "24 of 125 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "Online - Synchronous (See Delivery Instructions.)",
+            "times": [
+              { "instructions": "", "start": 810, "end": 990, "dayOfWeek": 1 },
+              { "instructions": "", "start": 810, "end": 990, "dayOfWeek": 3 },
+              { "instructions": "", "start": 810, "end": 990, "dayOfWeek": 5 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "0101"
+          }
+        ]
+      }
+    }
+  ]
+}

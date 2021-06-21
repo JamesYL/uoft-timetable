@@ -1,0 +1,119 @@
+{
+  "code": "CSC200",
+  "terms": [
+    {
+      "term": "F",
+      "meetings": {
+        "LEC": [
+          {
+            "instructors": ["Sarkar, S."],
+            "space": "140 of 275 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "Online - Synchronous (See Delivery Instructions.)",
+            "times": [
+              {
+                "instructions": "async",
+                "start": 0,
+                "end": 0,
+                "dayOfWeek": 2
+              }
+            ],
+            "activityType": "LEC",
+            "activityCode": "5101"
+          }
+        ],
+        "PRA": [
+          {
+            "instructors": ["Sarkar, S."],
+            "space": "140 of 275 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "",
+            "times": [
+              {
+                "instructions": "async",
+                "start": 0,
+                "end": 0,
+                "dayOfWeek": 4
+              }
+            ],
+            "activityType": "PRA",
+            "activityCode": "5101"
+          },
+          {
+            "instructors": ["Sarkar, S."],
+            "space": "140 of 275 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "Online - Synchronous (See Delivery Instructions.)",
+            "times": [
+              {
+                "instructions": "",
+                "start": 360,
+                "end": 420,
+                "dayOfWeek": 1
+              }
+            ],
+            "activityType": "PRA",
+            "activityCode": "5102"
+          }
+        ]
+      }
+    },
+    {
+      "term": "S",
+      "meetings": {
+        "LEC": [
+          {
+            "instructors": ["Sarkar, S."],
+            "space": "140 of 275 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "Online - Synchronous (See Delivery Instructions.)",
+            "times": [
+              {
+                "instructions": "async",
+                "start": 0,
+                "end": 0,
+                "dayOfWeek": 2
+              }
+            ],
+            "activityType": "LEC",
+            "activityCode": "5101"
+          }
+        ],
+        "PRA": [
+          {
+            "instructors": ["Sarkar, S."],
+            "space": "140 of 275 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "",
+            "times": [
+              {
+                "instructions": "async",
+                "start": 0,
+                "end": 0,
+                "dayOfWeek": 4
+              }
+            ],
+            "activityType": "PRA",
+            "activityCode": "5101"
+          },
+          {
+            "instructors": ["Sarkar, S."],
+            "space": "140 of 275 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "Online - Synchronous (See Delivery Instructions.)",
+            "times": [
+              {
+                "instructions": "",
+                "start": 360,
+                "end": 420,
+                "dayOfWeek": 1
+              }
+            ],
+            "activityType": "PRA",
+            "activityCode": "5102"
+          }
+        ]
+      }
+    }
+  ]
+}

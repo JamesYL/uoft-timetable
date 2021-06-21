@@ -28,8 +28,9 @@ export const addToTimetable = (
     const [startI, endI] = timeToIndex(time);
     for (let i = startI; i < endI; i++) {
       if (
-        ("FY".includes(simplifiedMeeting.term) && timetable.first[i] != null) ||
-        ("SY".includes(simplifiedMeeting.term) && timetable.second[i] != null)
+        ("FY".includes(simplifiedMeeting.term) &&
+          timetable.first[i] !== null) ||
+        ("SY".includes(simplifiedMeeting.term) && timetable.second[i] !== null)
       ) {
         throw new Error(
           `Trying to add to timetable when slot is used ${simplifiedMeeting}`
@@ -71,8 +72,8 @@ export const checkOverlap = (
     const [start, end] = timeToIndex(time);
     for (let i = start; i < end; i++) {
       if (
-        ("FY".includes(meeting.term) && timetable.first[i] != null) ||
-        ("SY".includes(meeting.term) && timetable.second[i] != null)
+        ("FY".includes(meeting.term) && timetable.first[i] !== null) ||
+        ("SY".includes(meeting.term) && timetable.second[i] !== null)
       )
         return true;
     }

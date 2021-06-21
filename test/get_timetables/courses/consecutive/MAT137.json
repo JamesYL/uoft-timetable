@@ -1,0 +1,25 @@
+{
+  "code": "MAT137",
+  "terms": [
+    {
+      "term": "F",
+      "meetings": {
+        "LEC": [
+          {
+            "instructors": ["Sarkar, S."],
+            "space": "140 of 275 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "Online - Synchronous (See Delivery Instructions.)",
+            "times": [
+              { "instructions": "", "start": 900, "end": 960, "dayOfWeek": 1 },
+              { "instructions": "", "start": 900, "end": 960, "dayOfWeek": 3 },
+              { "instructions": "", "start": 900, "end": 960, "dayOfWeek": 5 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "5101"
+          }
+        ]
+      }
+    }
+  ]
+}

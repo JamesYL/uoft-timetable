@@ -1,0 +1,53 @@
+{
+  "code": "CSC369",
+  "terms": [
+    {
+      "term": "F",
+      "meetings": {
+        "LEC": [
+          {
+            "instructors": ["Reid, K."],
+            "space": "24 of 125 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "Online - Synchronous (See Delivery Instructions.)",
+            "times": [
+              { "instructions": "", "start": 810, "end": 900, "dayOfWeek": 1 },
+              { "instructions": "", "start": 810, "end": 900, "dayOfWeek": 3 },
+              { "instructions": "", "start": 810, "end": 900, "dayOfWeek": 5 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "0101"
+          },
+          {
+            "instructors": ["Reid, K."],
+            "space": "51 of 125 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "Online - Synchronous (See Delivery Instructions.)",
+            "times": [
+              { "instructions": "", "start": 840, "end": 900, "dayOfWeek": 1 },
+              { "instructions": "", "start": 840, "end": 900, "dayOfWeek": 3 },
+              { "instructions": "", "start": 840, "end": 900, "dayOfWeek": 5 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "0201"
+          }
+        ],
+        "TUT": [
+          {
+            "instructors": ["Reid, K."],
+            "space": "24 of 125 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "Online - Synchronous (See Delivery Instructions.)",
+            "times": [
+              { "instructions": "", "start": 810, "end": 840, "dayOfWeek": 1 },
+              { "instructions": "", "start": 810, "end": 840, "dayOfWeek": 3 },
+              { "instructions": "", "start": 810, "end": 840, "dayOfWeek": 5 }
+            ],
+            "activityType": "TUT",
+            "activityCode": "0101"
+          }
+        ]
+      }
+    }
+  ]
+}
