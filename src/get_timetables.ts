@@ -13,7 +13,7 @@ export interface FlattenedMeeting {
   activityType: ActivityType;
   term: TermType;
   code: CourseCode;
-  dayOfWeek: 1 | 2 | 3 | 4 | 5;
+  dayOfWeek: 1 | 2 | 3 | 4 | 5 | -1;
   start: number;
   end: number;
   instructions: string;

@@ -1,5 +1,5 @@
 import { SimplifiedMeeting, timeComparator } from "./../src/simplify_data";
-import { Meeting, Time } from "../src/get_data";
+import { Meeting } from "../src/get_data";
 import { SimplifiedCourse, SimplifiedTerm } from "../src/simplify_data";
 
 const courseComparator = (a: SimplifiedCourse, b: SimplifiedCourse) =>

@@ -21,7 +21,7 @@ If after step 10 and no output at all is showing up, it's probably because it is
 
 ## Constraints
 
-Constraints fix issues by reducing the number of possible timetables. For example, if a course must be in first term and not second term, setting a constraint for that is helpful. To do so, edit the `./constraints.json` file.
+Constraints fix issues by reducing the number of possible timetables. For example, if a course must be in first term and not second term, setting a constraint for that is necessary. To do so, edit the `./constraints.json` file. Ensure the syntax is correct.
 
 ```json
 {

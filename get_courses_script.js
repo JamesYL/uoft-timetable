@@ -11,7 +11,7 @@ for (const course of document.querySelectorAll(".perCourse")) {
 			times.instructions = "";
 			times.start = 0;
 			times.end = 0;
-			times.dayOfWeek = 5;
+			times.dayOfWeek = -1;
 			if (startAndEndTimes.length == 0) {
 				times.instructions = day.querySelector(".weekDay").innerText;
 			} else {

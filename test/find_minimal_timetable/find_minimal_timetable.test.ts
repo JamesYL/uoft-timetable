@@ -21,7 +21,7 @@ const generateFlattenedMeeting = (
   };
 };
 describe("Find minimal timetable", () => {
-  test("Correct wasted time", () => {
+  test("Correct wasted time sync", () => {
     const allMeetings = [
       [
         generateFlattenedMeeting(1, 690, 720, "F"),
@@ -37,6 +37,17 @@ describe("Find minimal timetable", () => {
     // 3 * 40 total commute, 60 + 270 for day 1, 90 for day 3 (F)
     // 1 * 40 total commute (S)
     expect(findMinimalTimetable(40, allMeetings)[1]).toEqual(580);
+  });
+  test("Correct wasted time async", () => {
+    const allMeetings = [
+      [
+        generateFlattenedMeeting(1, 690, 720, "F"),
+        generateFlattenedMeeting(2, 690, 720, "F"),
+        generateFlattenedMeeting(2, 0, 0, "F", "async"),
+      ],
+    ];
+
+    expect(findMinimalTimetable(80, allMeetings)[1]).toEqual(160);
   });
   test("Correct minimal no async", () => {
     const correct1 = [

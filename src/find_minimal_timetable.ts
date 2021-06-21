@@ -29,9 +29,7 @@ const getCommuteTime = (
   const firstTerm = meetings.filter((meeting) => "FY".includes(meeting.term));
   const secondTerm = meetings.filter((meeting) => "SY".includes(meeting.term));
   const comparator = (a: FlattenedMeeting, b: FlattenedMeeting) => {
-    if (a.instructions && b.instructions) {
-      return 0;
-    } else if (a.instructions) return 1;
+    if (a.instructions) return 1;
     else if (b.instructions) return -1;
     else if (a.dayOfWeek < b.dayOfWeek) return -1;
     else if (a.dayOfWeek > b.dayOfWeek) return 1;
@@ -46,19 +44,24 @@ const getCommuteTime = (
     commuteTimeHelper(commute, secondTerm)
   );
 };
+/**
+ * Assumes meetings are sorted by time and everything is on the same term
+ */
 const commuteTimeHelper = (
   commute: number,
   meetings: FlattenedMeeting[]
 ): number => {
   const allDays = new Set<number>();
   for (let i = 0; i < meetings.length; i++) {
-    if (!meetings[i].instructions) allDays.add(meetings[i].dayOfWeek);
+    if (meetings[i].instructions) break;
+    allDays.add(meetings[i].dayOfWeek);
   }
   let total = allDays.size * commute;
   for (let i = 0; i < meetings.length; i++) {
     if (meetings[i].instructions) return total;
-    if (
+    else if (
       i + 1 !== meetings.length &&
+      !meetings[i + 1].instructions &&
       meetings[i].dayOfWeek === meetings[i + 1].dayOfWeek
     ) {
       total += meetings[i + 1].start - meetings[i].end;

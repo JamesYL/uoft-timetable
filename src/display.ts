@@ -29,6 +29,7 @@ export const displayMeetings = (
       outputStrs.push(displayTimetable(meetings[i]));
     fs.writeFileSync(outputLoc, outputStrs.join("\n"));
   }
+  console.log("Successfully generated timetables");
 };
 
 const displayTimetable = (meetings: FlattenedMeeting[]) => {
@@ -60,6 +61,6 @@ const displayNice = (meeting: FlattenedMeeting) => {
   const endMin = `${meeting.end % 60}`;
   const endTime = `${endHour}:` + (endMin.length === 1 ? `0${endMin}` : endMin);
   return `${meeting.code}-${meeting.term} on ${
-    intToDay[meeting.dayOfWeek]
+    intToDay[meeting.dayOfWeek as 1 | 2 | 3 | 4 | 5]
   } from ${startTime} to ${endTime} for ${meeting.activityType}${allCodes}`;
 };
