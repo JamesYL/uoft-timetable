@@ -93,18 +93,14 @@ const sameTime = (time: Time[], otherTime: Time[]): boolean => {
   if (time.length !== otherTime.length) return false;
   const comparator = (a: Time, b: Time) => {
     if (a.instructions && b.instructions) {
-      if (a.dayOfWeek < b.dayOfWeek) return -1;
-      else if (b.dayOfWeek < a.dayOfWeek) return 1;
-      else if (a.start < b.start) return -1;
-      else if (a.start === b.start) return 0;
-      return 1;
+      return 0;
     } else if (a.instructions) return 1;
     else if (b.instructions) return -1;
     else if (a.dayOfWeek < b.dayOfWeek) return -1;
     else if (b.dayOfWeek < a.dayOfWeek) return 1;
     else if (a.start < b.start) return -1;
-    else if (a.start === b.start) return 0;
-    return 1;
+    else if (a.start > b.start) return 1;
+    return 0;
   };
   time.sort(comparator);
   otherTime.sort(comparator);
