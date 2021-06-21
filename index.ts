@@ -13,3 +13,4 @@ const [minimalTimetables, minutesWasted] = findMinimalTimetable(
   allTimetables
 );
 displayMeetings(minimalTimetables, minutesWasted, constraint.maxPrint);
+

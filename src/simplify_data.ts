@@ -77,8 +77,8 @@ const simplifyMeetingsSameActivity = (
       } else {
         badMeetings.push(meetings[i]);
       }
-      meetings = badMeetings;
     }
+    meetings = badMeetings;
     combined.push({
       activityType: goodMeetings[0].activityType,
       times: goodMeetings[0].times,
@@ -96,33 +96,28 @@ const sameTime = (time: Time[], otherTime: Time[]): boolean => {
       if (a.dayOfWeek < b.dayOfWeek) return -1;
       else if (b.dayOfWeek < a.dayOfWeek) return 1;
       else if (a.start < b.start) return -1;
+      else if (a.start === b.start) return 0;
       return 1;
     } else if (a.instructions) return 1;
     else if (b.instructions) return -1;
     else if (a.dayOfWeek < b.dayOfWeek) return -1;
     else if (b.dayOfWeek < a.dayOfWeek) return 1;
     else if (a.start < b.start) return -1;
+    else if (a.start === b.start) return 0;
     return 1;
   };
   time.sort(comparator);
   otherTime.sort(comparator);
   for (let i = 0; i < time.length; i++) {
-    if (
-      (!!time[i].instructions && !otherTime[i].instructions) ||
-      (!time[i].instructions && !!otherTime[i].instructions)
-    )
-      return false; // One is async but the other one isn't
-
-    // If both aren't async and different stuff
-    if (
-      !time[i].instructions &&
-      !otherTime[i].instructions &&
-      (time[i].dayOfWeek !== otherTime[i].dayOfWeek ||
-        time[i].start !== otherTime[i].start ||
-        time[i].end !== otherTime[i].end)
+    if (!!time[i].instructions && !!otherTime[i].instructions) return true;
+    else if (!!time[i].instructions || !!otherTime[i].instructions)
+      return false;
+    else if (
+      time[i].dayOfWeek !== otherTime[i].dayOfWeek ||
+      time[i].start !== otherTime[i].start ||
+      time[i].end !== otherTime[i].end
     )
       return false;
   }
-
   return true;
 };

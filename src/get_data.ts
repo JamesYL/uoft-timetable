@@ -101,6 +101,7 @@ export const getConstraint = (constraintsFile: string): FilteredConstraint => {
 export const getCourses = (coursesDir: string): Course[] => {
   const courses: Course[] = fs
     .readdirSync(coursesDir)
+    .filter((file) => file.endsWith(".json"))
     .map((file) =>
       JSON.parse(fs.readFileSync(path.join(coursesDir, file), "utf8"))
     );

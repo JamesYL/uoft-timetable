@@ -1,0 +1,54 @@
+{
+  "code": "async_two_sync",
+  "terms": [
+    {
+      "term": "F",
+      "meetings": {
+        "LEC": [
+          {
+            "instructors": ["Demke Brown, A.", "Munson, E."],
+            "space": "6 of 28 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "Online - Synchronous (See Delivery Instructions.)",
+            "times": [
+              { "instructions": "", "start": 960, "end": 1020, "dayOfWeek": 2 },
+              { "instructions": "", "start": 840, "end": 900, "dayOfWeek": 4 },
+              { "instructions": "", "start": 840, "end": 900, "dayOfWeek": 5 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "0101"
+          },
+          {
+            "instructors": ["Demke Brown, A.", "Munson, E."],
+            "space": "7 of 33 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "Asynchronous (See Delivery Instructions.)",
+            "times": [
+              {
+                "instructions": "6.0 hours / week",
+                "start": 0,
+                "end": 0,
+                "dayOfWeek": 5
+              }
+            ],
+            "activityType": "LEC",
+            "activityCode": "5101"
+          },
+          {
+            "instructors": ["Demke Brown, A.", "Munson, E."],
+            "space": "32 of 97 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "Online - Synchronous (See Delivery Instructions.)",
+            "times": [
+              { "instructions": "", "start": 960, "end": 1020, "dayOfWeek": 2 },
+              { "instructions": "", "start": 840, "end": 960, "dayOfWeek": 4 },
+              { "instructions": "", "start": 840, "end": 900, "dayOfWeek": 5 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "9101"
+          }
+        ]
+      }
+    }
+  ]
+}

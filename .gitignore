@@ -2,3 +2,5 @@ node_modules
 coverage
 package-lock.json
 output.txt
+__test__.ts
+__test__
