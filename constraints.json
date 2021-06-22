@@ -7,6 +7,5 @@
       "exclude": ["LEC5109", "LEC0202"]
     }
   },
-  "commute_time": 120,
-  "print_amount": 5
+  "commute_time": 120
 }

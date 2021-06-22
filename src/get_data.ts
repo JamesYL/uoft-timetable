@@ -36,7 +36,6 @@ interface Constraint {
   course_constraint: {
     [key: string]: CourseConstraint;
   };
-  print_amount: number;
 }
 interface CourseConstraint {
   term: TermType;
@@ -49,7 +48,6 @@ export interface FilteredConstraint {
   courseConstraint: {
     [key: string]: FilteredCourseConstraint;
   };
-  maxPrint: number;
 }
 export interface FilteredCourseConstraint {
   term: TermType;
@@ -89,7 +87,6 @@ export const getConstraint = (constraintsFile: string): FilteredConstraint => {
     biggestTime: parseInt(endHour1) * 60 + parseInt(endMin2),
     commute: constraints.commute_time,
     courseConstraint: filteredCourseConstraints,
-    maxPrint: constraints.print_amount,
   };
   return filteredConstraints;
 };

@@ -37,8 +37,7 @@ Constraints fix issues by reducing the number of possible timetables. For exampl
       "exclude": []
     }
   },
-  "commute_time": 120,
-  "print_amount": 5
+  "commute_time": 120
 }
 ```
 
@@ -51,8 +50,6 @@ Constraints fix issues by reducing the number of possible timetables. For exampl
 **`course_constraint`**: Each key must be a valid course code mentioned in step 4 of [How to Start](#how-to-start). The key must refer to an object with properties found [here](#constraints-for-courses). This key is **optional**! If there are no constraints a course, do not have the key for it.
 
 **`commute_time`**: Total commute time each day in minutes (both ways)
-
-**`print_amount`**: Maximum number of timetables displayed
 
 ### Constraints for Courses
 

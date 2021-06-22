@@ -91,7 +91,6 @@ describe("Getting data", () => {
           ],
         },
       },
-      maxPrint: 5,
     };
     expect(constraint).toEqual(realConstraints);
   });

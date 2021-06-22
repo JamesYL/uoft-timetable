@@ -5,13 +5,12 @@ import { flattenedMeetingComparator } from "./find_minimal_timetable";
  * Displaying the minimal timetables in output file
  * @param meetings The timetables
  * @param minutesWasted Commute time used
- * @param maxPrint Max timetables displayed
+ * @param outputLoc Output file
  */
 export const displayMeetings = (
   meetings: FlattenedMeeting[][],
   minutesWasted: number,
-  maxPrint: number,
-  outputLoc = "./output.txt"
+  outputLoc: string
 ): void => {
   if (meetings.length === 0)
     fs.writeFileSync(
@@ -26,7 +25,7 @@ export const displayMeetings = (
     outputStrs.push(
       `${minutesWasted / 60} hours wasted per week (both terms).`
     );
-    for (let i = 0; i < Math.min(meetings.length, maxPrint); i++)
+    for (let i = 0; i < Math.min(meetings.length); i++)
       outputStrs.push(displayTimetable(meetings[i]));
     fs.writeFileSync(outputLoc, outputStrs.join("\n"));
   }

@@ -12,5 +12,4 @@ const [minimalTimetables, minutesWasted] = findMinimalTimetable(
   constraint.commute,
   allTimetables
 );
-displayMeetings(minimalTimetables, minutesWasted, constraint.maxPrint);
-
+displayMeetings(minimalTimetables, minutesWasted, "./output.txt");

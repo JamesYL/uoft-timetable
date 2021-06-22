@@ -15,6 +15,5 @@
       "exclude": []
     }
   },
-  "commute_time": 120,
-  "print_amount": 5
+  "commute_time": 120
 }
