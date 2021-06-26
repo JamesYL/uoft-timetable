@@ -45,7 +45,7 @@ Constraints fix issues by reducing the number of possible timetables. For exampl
 
 **`smallest_start_time`**: Earliest start time a course can be. It must follow a 24 hour time format of `mm:ss`. In this example, the earliest start time for a course is 9:00 am.
 
-**`biggest_end_time`**: Latest end time a course can be. Same format as before. Example is the latest time for a course is 9:00 pm.
+**`biggest_end_time`**: Latest end time a course can be. Same format as before. Example is the latest time for a course which is 9:00 pm.
 
 **`course_constraint`**: Each key must be a valid course code mentioned in step 4 of [How to Start](#how-to-start). The key must refer to an object with properties found [here](#constraints-for-courses). This key is **optional**! If there are no constraints a course, do not have the key for it.
 
