@@ -33,16 +33,17 @@ export const displayMeetings = (
 };
 
 const displayTimetable = (meetings: FlattenedMeeting[]) => {
-  meetings.sort(flattenedMeetingComparator);
   const firstDivider = "—————————————————First Term—————————————————";
   const firstTerm = meetings
     .filter((meeting) => "FY".includes(meeting.term))
+    .sort(flattenedMeetingComparator)
     .map(displayNice)
     .join("\n");
   const secondDivider = "—————————————————Second Term—————————————————";
 
   const secondTerm = meetings
     .filter((meeting) => "SY".includes(meeting.term))
+    .sort(flattenedMeetingComparator)
     .map(displayNice)
     .join("\n");
   return `\n${firstDivider}\n${firstTerm}\n${secondDivider}\n${secondTerm}\n`;

@@ -22,6 +22,10 @@ export const findMinimalTimetable = (
   if (smallest === 1000000) return [[], smallest];
   return [commuteTimeToMeetings[smallest], smallest];
 };
+/**
+ * Sorting comparator that only cares about
+ * day of week and time of day, NOT day of year
+ */
 export const flattenedMeetingComparator = (
   a: FlattenedMeeting,
   b: FlattenedMeeting
