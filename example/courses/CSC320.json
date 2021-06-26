@@ -1,0 +1,53 @@
+{
+  "code": "CSC320",
+  "terms": [
+    {
+      "term": "S",
+      "meetings": {
+        "LEC": [
+          {
+            "instructors": [],
+            "space": "124 of 124 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "In Person",
+            "times": [
+              { "instructions": "", "start": 540, "end": 660, "dayOfWeek": 2 },
+              { "instructions": "", "start": 600, "end": 660, "dayOfWeek": 4 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "0101"
+          },
+          {
+            "instructors": [],
+            "space": "1 of 1 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "In Person",
+            "times": [
+              { "instructions": "", "start": 540, "end": 660, "dayOfWeek": 2 },
+              { "instructions": "", "start": 600, "end": 660, "dayOfWeek": 4 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "2001"
+          },
+          {
+            "instructors": [],
+            "space": "125 of 125 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "In Person",
+            "times": [
+              {
+                "instructions": "",
+                "start": 1080,
+                "end": 1200,
+                "dayOfWeek": 2
+              },
+              { "instructions": "", "start": 1200, "end": 1260, "dayOfWeek": 2 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "5101"
+          }
+        ]
+      }
+    }
+  ]
+}

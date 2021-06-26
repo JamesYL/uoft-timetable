@@ -1,0 +1,72 @@
+{
+  "code": "CSC311",
+  "terms": [
+    {
+      "term": "F",
+      "meetings": {
+        "LEC": [
+          {
+            "instructors": [],
+            "space": "135 of 135 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "In Person",
+            "times": [
+              { "instructions": "", "start": 660, "end": 780, "dayOfWeek": 5 },
+              { "instructions": "", "start": 900, "end": 960, "dayOfWeek": 5 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "0101"
+          },
+          {
+            "instructors": [],
+            "space": "165 of 165 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "In Person",
+            "times": [
+              { "instructions": "", "start": 660, "end": 780, "dayOfWeek": 5 },
+              { "instructions": "", "start": 900, "end": 960, "dayOfWeek": 5 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "0102"
+          },
+          {
+            "instructors": [],
+            "space": "165 of 165 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "In Person",
+            "times": [
+              { "instructions": "", "start": 960, "end": 1080, "dayOfWeek": 4 },
+              { "instructions": "", "start": 1140, "end": 1200, "dayOfWeek": 4 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "0201"
+          },
+          {
+            "instructors": [],
+            "space": "165 of 165 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "In Person",
+            "times": [
+              { "instructions": "", "start": 960, "end": 1080, "dayOfWeek": 4 },
+              { "instructions": "", "start": 1140, "end": 1200, "dayOfWeek": 4 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "0202"
+          },
+          {
+            "instructors": [],
+            "space": "30 of 30 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "In Person",
+            "times": [
+              { "instructions": "", "start": 660, "end": 780, "dayOfWeek": 5 },
+              { "instructions": "", "start": 900, "end": 960, "dayOfWeek": 5 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "2001"
+          }
+        ]
+      }
+    }
+  ]
+}

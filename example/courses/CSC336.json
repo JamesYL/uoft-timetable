@@ -1,0 +1,48 @@
+{
+  "code": "CSC336",
+  "terms": [
+    {
+      "term": "F",
+      "meetings": {
+        "LEC": [
+          {
+            "instructors": [],
+            "space": "120 of 120 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "In Person",
+            "times": [
+              {
+                "instructions": "",
+                "start": 1080,
+                "end": 1200,
+                "dayOfWeek": 2
+              },
+              { "instructions": "", "start": 1200, "end": 1260, "dayOfWeek": 2 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "5101"
+          }
+        ]
+      }
+    },
+    {
+      "term": "S",
+      "meetings": {
+        "LEC": [
+          {
+            "instructors": [],
+            "space": "120 of 120 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "In Person",
+            "times": [
+              { "instructions": "", "start": 780, "end": 900, "dayOfWeek": 2 },
+              { "instructions": "", "start": 780, "end": 840, "dayOfWeek": 4 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "0101"
+          }
+        ]
+      }
+    }
+  ]
+}

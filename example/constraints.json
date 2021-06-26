@@ -1,0 +1,11 @@
+{
+  "smallest_start_time": "09:00",
+  "biggest_end_time": "21:00",
+  "course_constraint": {
+    "CSC311": {
+      "term": "F",
+      "exclude": ["LEC2001"]
+    }
+  },
+  "commute_time": 120
+}

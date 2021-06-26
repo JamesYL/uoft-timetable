@@ -1,0 +1,84 @@
+{
+  "code": "CSC373",
+  "terms": [
+    {
+      "term": "F",
+      "meetings": {
+        "LEC": [
+          {
+            "instructors": [],
+            "space": "125 of 125 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "In Person",
+            "times": [
+              { "instructions": "", "start": 960, "end": 1020, "dayOfWeek": 1 },
+              { "instructions": "", "start": 780, "end": 900, "dayOfWeek": 2 },
+              { "instructions": "", "start": 840, "end": 900, "dayOfWeek": 4 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "0101"
+          },
+          {
+            "instructors": [],
+            "space": "125 of 125 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "In Person",
+            "times": [
+              { "instructions": "", "start": 960, "end": 1020, "dayOfWeek": 1 },
+              { "instructions": "", "start": 900, "end": 960, "dayOfWeek": 2 },
+              { "instructions": "", "start": 900, "end": 1020, "dayOfWeek": 4 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "0201"
+          }
+        ]
+      }
+    },
+    {
+      "term": "S",
+      "meetings": {
+        "LEC": [
+          {
+            "instructors": [],
+            "space": "125 of 125 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "In Person",
+            "times": [
+              { "instructions": "", "start": 660, "end": 720, "dayOfWeek": 1 },
+              { "instructions": "", "start": 660, "end": 780, "dayOfWeek": 3 },
+              { "instructions": "", "start": 660, "end": 720, "dayOfWeek": 5 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "0101"
+          },
+          {
+            "instructors": [],
+            "space": "125 of 125 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "In Person",
+            "times": [
+              { "instructions": "", "start": 840, "end": 900, "dayOfWeek": 1 },
+              { "instructions": "", "start": 840, "end": 960, "dayOfWeek": 3 },
+              { "instructions": "", "start": 840, "end": 900, "dayOfWeek": 5 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "0201"
+          },
+          {
+            "instructors": [],
+            "space": "125 of 125 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "In Person",
+            "times": [
+              { "instructions": "", "start": 960, "end": 1020, "dayOfWeek": 1 },
+              { "instructions": "", "start": 960, "end": 1080, "dayOfWeek": 3 },
+              { "instructions": "", "start": 960, "end": 1020, "dayOfWeek": 5 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "0301"
+          }
+        ]
+      }
+    }
+  ]
+}

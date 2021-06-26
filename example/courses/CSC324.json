@@ -1,0 +1,38 @@
+{
+  "code": "CSC324",
+  "terms": [
+    {
+      "term": "S",
+      "meetings": {
+        "LEC": [
+          {
+            "instructors": [],
+            "space": "120 of 120 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "In Person",
+            "times": [
+              { "instructions": "", "start": 780, "end": 840, "dayOfWeek": 1 },
+              { "instructions": "", "start": 780, "end": 840, "dayOfWeek": 3 },
+              { "instructions": "", "start": 780, "end": 840, "dayOfWeek": 5 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "0101"
+          },
+          {
+            "instructors": [],
+            "space": "120 of 120 available",
+            "waitlist": "Yes: 0 student",
+            "notes": "In Person",
+            "times": [
+              { "instructions": "", "start": 840, "end": 900, "dayOfWeek": 1 },
+              { "instructions": "", "start": 840, "end": 900, "dayOfWeek": 3 },
+              { "instructions": "", "start": 840, "end": 900, "dayOfWeek": 5 }
+            ],
+            "activityType": "LEC",
+            "activityCode": "0201"
+          }
+        ]
+      }
+    }
+  ]
+}
